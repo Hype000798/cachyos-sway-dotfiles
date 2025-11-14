@@ -90,10 +90,10 @@ cp ~/.local/share/chezmoi/dot_* ~/
 - Includes SwayFX enhancements for rounded corners and other visual effects
 
 ### Wallpapers
-- Note: The wallpapers are NOT included in this repository due to large file sizes that would bloat the git repository
-- Wallpapers are stored in `~/.config/backgrounds/` in the original system
-- You'll need to manually copy your wallpapers to this location after installation
+- Wallpapers are now included in this repository in the `~/.config/backgrounds/` directory
+- The backgrounds folder has been added to the repository as requested
 - The `swww` or `swaybg` utilities are typically used for setting wallpapers in Sway
+- Note: This increases the repository size significantly due to the high-resolution images
 
 ### Waybar
 - Catppuccin-themed status bar
