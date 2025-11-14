@@ -1,0 +1,53 @@
+######################################################################
+#        ______          __     ____                 __  ______      #
+#       / ____/___  ____/ /__  / __ \____  _____    / / / / __ \     #
+#      / /   / __ \/ __  / _ \/ / / / __ \/ ___/   / /_/ / / / /     #
+#     / /___/ /_/ / /_/ /  __/ /_/ / /_/ (__  )   / __  / /_/ /      #
+#     \____/\____/\__,_/\___/\____/ .___/____/   /_/ /_/\___\_\      #
+#                                /_/                                 #
+######################################################################
+
+gaps inner 4
+gaps outer 4
+
+# Initialize wallpaper with swww
+exec_always ~/.config/sway/scripts/swww_init_simple.sh
+
+# Apply SwayFX visual enhancements - only if supported
+corner_radius 12
+blur enable
+blur_xray off
+blur_passes 2
+shadows enable
+
+# Apply visual effects to specific UI elements
+layer_effects "waybar" {
+    blur enable
+    blur_xray enable
+    shadows enable
+    corner_radius 10
+}
+
+layer_effects "swaync" {
+    blur enable
+    blur_xray enable
+    shadows enable
+    corner_radius 10
+}
+
+# Start audio services
+exec_always ~/.config/sway/scripts/start_audio_services.sh
+
+# include custom sway config
+include "${XDG_CONFIG_HOME:-$HOME/.config}/sway/config.d/*.conf"
+
+# include default sway config
+include '$(/usr/libexec/sway/layered-include "/usr/share/sway/config.d/*.conf" "/etc/sway/config.d/*.conf")'
+
+# Enable focus follows mouse
+focus_follows_mouse always
+
+exec swaync &
+exec autotiling &
+
+
