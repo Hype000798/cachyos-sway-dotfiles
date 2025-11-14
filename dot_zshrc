@@ -1,0 +1,79 @@
+#
+# ~/.zshrc - FINAL, DEFINITIVE WORKING CONFIGURATION (Updated zsh-autocomplete location)
+#
+
+# ===============================================
+# 1. ZINIT INSTALLATION AND INITIALIZATION
+# ===============================================
+ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
+
+if [ ! -d "${ZINIT_HOME}" ]; then
+    print -P "%F{33}Installing Zinit...%f"
+    mkdir -p "$(dirname ${ZINIT_HOME})"
+    git clone https://github.com/zdharma-continuum/zinit.git "${ZINIT_HOME}"
+fi
+
+source "${ZINIT_HOME}/zinit.zsh"
+
+# ===============================================
+# 2. ZSH OPTIONS
+# ===============================================
+setopt HIST_IGNORE_DUPS
+setopt AUTO_CD
+setopt PROMPT_SUBST
+setopt GLOB_DOTS
+setopt CORRECT
+
+# ===============================================
+# 3. ZINIT PLUGIN LOADS (Using Sequential 'light' mode)
+# ===============================================
+
+# Core Plugins
+zinit light zdharma-continuum/fast-syntax-highlighting
+zinit light zsh-users/zsh-history-substring-search
+zinit light ajeetdsouza/zoxide
+
+# CRITICAL FIX: Use the new, correct repository path (marlonrichert/zsh-autocomplete)
+zinit light marlonrichert/zsh-autocomplete
+
+# zsh-users/zsh-autosuggestions REMOVED to eliminate conflict.
+
+# ===============================================
+# 4. POST-PLUGIN CONFIGURATION
+# ===============================================
+
+# Zoxide Initialization
+if command -v zoxide >/dev/null 2>&1; then
+    eval "$(zoxide init zsh)"
+fi
+
+# History Substring Search Key Bindings
+bindkey -M emacs '^[[A' history-substring-search-up
+bindkey -M emacs '^[[B' history-substring-search-down
+bindkey -M vicmd '^[[A' history-substring-search-up
+bindkey -M vicmd '^[[B' history-substring-search-down
+
+# ===============================================
+# 5. PROMPT SETUP (Oh My Posh)
+# ===============================================
+OH_MY_POSH_THEME="/usr/share/oh-my-posh/themes/catppuccin.omp.json"
+
+if command -v oh-my-posh >/dev/null 2>&1; then
+    eval "$(oh-my-posh init zsh --config ${OH_MY_POSH_THEME})"
+else
+    PROMPT='%n@%m %~ %# '
+fi
+
+# ===============================================
+# 6. COMPLETION & KEYBINDING
+# ===============================================
+# zsh-autocomplete handles all completions and bindings.
+autoload -Uz compinit
+
+
+# Initialize Homebrew if it's installed
+if command -v brew >/dev/null 2>&1; then
+    eval "$(brew shellenv)"
+fi
+
+
