@@ -89,6 +89,12 @@ cp ~/.local/share/chezmoi/dot_* ~/
 - Custom keybindings for splits (SHIFT+ALT+H/V)
 - Includes SwayFX enhancements for rounded corners and other visual effects
 
+### Wallpapers
+- Note: The wallpapers are NOT included in this repository due to large file sizes that would bloat the git repository
+- Wallpapers are stored in `~/.config/backgrounds/` in the original system
+- You'll need to manually copy your wallpapers to this location after installation
+- The `swww` or `swaybg` utilities are typically used for setting wallpapers in Sway
+
 ### Waybar
 - Catppuccin-themed status bar
 - Includes system info, workspaces, window titles, and system tray
