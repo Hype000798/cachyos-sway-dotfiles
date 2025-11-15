@@ -5,7 +5,7 @@ This repository contains my personal dotfiles for a Sway-based development envir
 ## Included Configurations
 
 ### Window Manager
-- **Sway** - Tiling Wayland compositor (replacement for i3)
+- **SwayFX** - Tiling Wayland compositor with advanced visual effects (a fork of Sway)
 
 ### Status Bar & Application Launcher
 - **Waybar** - Highly customizable Wayland bar
@@ -35,7 +35,7 @@ Install required packages on CachyOS:
 
 ```bash
 # Sway and related packages
-sudo pacman -S sway hyprlock swaync swayr waybar rofi yazi wezterm mpv zsh bash
+sudo pacman -S swayfx hyprlock swaync swayr waybar rofi yazi wezterm mpv zsh bash
 
 # Additional tools that work well with this setup
 sudo pacman -S grim slurp wl-clipboard mako brightnessctl playerctl pavucontrol alacritty foot noto-fonts ttf-jetbrains-mono ttf-font-awesome polkit-gnome
