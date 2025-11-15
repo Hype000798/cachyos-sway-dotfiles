@@ -12,7 +12,7 @@ This repository contains my personal dotfiles for a Sway-based development envir
 - **Rofi** - Application launcher and window switcher
 
 ### Screen Management & Utilities
-- **Swaylock** - Screen locker
+- **Hyprlock** - Screen locker (replaces Swaylock)
 - **Swaync** - Notification center for Sway
 - **Swayr** - Window manager/ruler for Sway
 
@@ -35,7 +35,7 @@ Install required packages on CachyOS:
 
 ```bash
 # Sway and related packages
-sudo pacman -S sway swaylock swaync swayr waybar rofi yazi wezterm mpv zsh bash
+sudo pacman -S sway hyprlock swaync swayr waybar rofi yazi wezterm mpv zsh bash
 
 # Additional tools that work well with this setup
 sudo pacman -S grim slurp wl-clipboard mako brightnessctl playerctl pavucontrol alacritty foot noto-fonts ttf-jetbrains-mono ttf-font-awesome polkit-gnome
@@ -88,6 +88,7 @@ cp ~/.local/share/chezmoi/dot_* ~/
 - Catppuccin Mocha theme
 - Custom keybindings for splits (SHIFT+ALT+H/V)
 - Includes SwayFX enhancements for rounded corners and other visual effects
+- Screen locking now handled by Hyprlock.
 
 ### Wallpapers
 - Wallpapers are now included in this repository in the `~/.config/backgrounds/` directory
@@ -116,11 +117,66 @@ The MPV configuration includes a script for downloading lyrics from Musixmatch. 
 2. Edit `~/.config/mpv/scripts/lrc.lua` and replace `REDACTED_MUSIXMATCH_TOKEN` with your actual token
 3. Or create `~/.config/mpv/script-opts/lrc.conf` with your token settings
 
+## Theming and Visuals (Dracula Theme & Waybar Fixes)
+
+This section summarizes the recent fixes and enhancements made to Sway and Waybar configuration, including implementing dark mode with the Dracula theme.
+
+### Waybar Configuration Fixes
+- **Issues Found:** JSON syntax errors due to comments and invalid JSON syntax in multiple configuration files (`config`, `config-background`, `modules.json`, `modules-background.json`).
+- **Fixes Applied:**
+    - Removed all comments (`//`) from JSON files as JSON does not support comments.
+    - Fixed syntax errors including missing commas, trailing commas, and malformed sections.
+    - All JSON files are now validated for proper syntax.
+
+### Blur Effect Enhancement
+- Updated `style.css` and `style-background.css` to enhance blur effect.
+- Added `backdrop-filter: blur(12px)` for additional blur.
+- Adjusted transparency levels for improved visual effect.
+- Added `border-radius` to match SwayFX configuration, leveraging existing SwayFX blur capabilities.
+
+### Dark Mode Implementation with Dracula Theme
+- **System Configuration:**
+    - Created `~/.config/gtk-3.0/` and `~/.config/gtk-4.0/` directories.
+    - Configured `settings.ini` files to use the Dracula theme.
+    - Set environment variables to enforce a system-wide dark theme.
+- **Theme Configuration:**
+    - Set `gtk-theme-name` to "Dracula".
+    - Enhanced custom CSS (`gtk.css`) with the Dracula color palette, focusing on purple accents (`#BD93F9`) instead of blue.
+    - Created CSS overrides for common UI elements: selected items, header bars, buttons, scrollbars, text entry fields, menus, popovers, checkboxes, and switches.
+- **Application Support:**
+    - Configured Qt applications using `qt5ct`.
+    - Set environment variables for cross-platform consistency.
+- **Color Palette Used (Dracula Theme):**
+    - Purple: `#BD93F9` (primary accent)
+    - Dark Background: `#282A36`
+    - Gray: `#44475A` (secondary backgrounds)
+    - Light Text: `#F8F8F2`
+    - Other accents: `#6272A4`
+
+### System Integration
+- **Sway Configuration Updates:** Added `exec_always` command to source environment variables from `~/.config/sway/environment`, ensuring variables are available for all applications.
+- **Environment Variables Set:**
+    - `GTK_THEME=Dracula`
+    - `XDG_CURRENT_DESKTOP=sway`
+    - `DESKTOP_SESSION=sway`
+    - `MOZ_USE_SYSTEM_THEME=0`
+    - `GTK_USE_PORTAL=0`
+    - `QT_QPA_PLATFORMTHEME=qt5ct`
+    - `QT_STYLE_OVERRIDE=GTK+`
+    - `ELM_THEME=dracula`
+    - `EFL_THEME=dracula`
+    - `ALACRITTY_THEME=dracula`
+
+### Required Actions for Full Theming
+1. Install Dracula icons separately: `yay -S dracula-icons-git`
+2. Logout/restart or restart your Sway session to apply all changes.
+3. Verify applications are displaying in dark mode with purple accents.
+
 ## Customization
 
 - **Wallpapers**: Wallpapers are stored separately and not included in this repository due to size constraints. Add your own wallpapers to `~/.config/backgrounds/`
-- **Color Schemes**: Most configurations use Catppuccin themes (Mocha flavor) which can be changed in their respective config files
-- **Key Bindings**: Most key bindings are set in the Sway config and can be customized to your preference
+- **Color Schemes**: Most configurations use Catppuccin themes (Mocha flavor) which can be changed in their respective config files. The Dracula theme has been integrated for a system-wide dark mode.
+- **Key Bindings**: Most key bindings are set in the Sway config and can be customized to your preference.
 
 ## Troubleshooting
 
