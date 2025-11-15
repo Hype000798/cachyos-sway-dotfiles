@@ -208,3 +208,62 @@ chezmoi diff
 ## Contributing
 
 Feel free to fork this repository and adapt it for your own needs. If you find any issues or have improvements, feel free to open an issue or submit a pull request.
+
+## Font Installation
+
+This section provides detailed instructions for installing the `0xProtoNerdFontMono-Regular` font on Linux.
+
+**1. Download the Font:**
+
+First, you'll need to find and download the `0xProtoNerdFontMono-Regular` font file. Nerd Fonts usually package many fonts, so you might need to find the specific one. You can typically find it on the Nerd Fonts GitHub repository or website.
+
+Assuming you've downloaded a `.ttf` or `.otf` file (or a zip containing them), let's proceed. For example, if you download a zip file, you'll need to extract it.
+
+**2. Create a Font Directory (if it doesn't exist):**
+
+Most Linux distributions look for user-installed fonts in `~/.local/share/fonts/` or `~/.fonts/`. If these directories don't exist, you can create them.
+
+```bash
+mkdir -p ~/.local/share/fonts/
+```
+
+**3. Copy the Font File(s):**
+
+Copy the downloaded font file(s) (e.g., `0xProtoNerdFontMono-Regular.ttf`) into the newly created or existing font directory.
+
+```bash
+cp /path/to/your/downloaded/0xProtoNerdFontMono-Regular.ttf ~/.local/share/fonts/
+```
+(Replace `/path/to/your/downloaded/` with the actual path where you downloaded the font.)
+
+If you downloaded a zip file and extracted multiple `.ttf` or `.otf` files, copy all of them.
+
+**4. Update the Font Cache:**
+
+After adding new fonts, you need to update the font cache so that applications can find and use them.
+
+```bash
+fc-cache -f -v
+```
+
+This command forces a regeneration of the font cache and provides verbose output.
+
+**5. Verify Installation (Optional):**
+
+You can check if the font is recognized by your system using `fc-list`:
+
+```bash
+fc-list | grep "0xProto"
+```
+
+You should see output listing the `0xProtoNerdFontMono-Regular` font.
+
+**6. Use the Font:**
+
+Now you can select `0xProtoNerdFontMono-Regular` in your terminal emulator, text editor, or any other application that allows font customization.
+
+**Troubleshooting:**
+
+*   **Permissions:** Ensure the font files have readable permissions.
+*   **Incorrect Path:** Double-check that you copied the font files to the correct directory.
+*   **Application Restart:** Some applications might need to be restarted to recognize new fonts.
