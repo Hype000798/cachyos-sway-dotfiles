@@ -16,6 +16,9 @@ This repository contains my personal dotfiles for a Sway-based development envir
 - **Swaync** - Notification center for Sway
 - **Swayr** - Window manager/ruler for Sway
 
+### Clipboard Management
+- **Cliphist** - Wayland clipboard history manager
+
 ### Terminal & File Management
 - **WezTerm** - GPU-accelerated terminal emulator
 - **Yazi** - Blazing fast terminal file manager with vim-like keybindings
@@ -38,7 +41,7 @@ Install required packages on CachyOS:
 sudo pacman -S swayfx hyprlock swaync swayr waybar rofi yazi wezterm mpv zsh bash
 
 # Additional tools that work well with this setup
-sudo pacman -S grim slurp wl-clipboard mako brightnessctl playerctl pavucontrol alacritty foot noto-fonts ttf-jetbrains-mono ttf-font-awesome polkit-gnome
+sudo pacman -S grim slurp wl-clipboard mako brightnessctl playerctl pavucontrol alacritty foot noto-fonts ttf-jetbrains-mono ttf-font-awesome polkit-gnome cliphist
 
 # For audio controls
 sudo pacman -S pipewire pipewire-alsa pipewire-pulse pipewire-jack
