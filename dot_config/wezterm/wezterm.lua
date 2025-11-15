@@ -22,13 +22,10 @@ config.use_fancy_tab_bar = true
 
 -- Correct structure: wezterm.font("Name", { style_table }, { features_array })
 config.font = wezterm.font(
-    'JetBrains Mono', 
+    '0xProtoNerdFontMono', 
     { 
-        -- Only style attributes (like weight) go here
         weight = 'Bold', 
-    },
-    -- Features array goes here as the third argument
-    { "liga=1", "clig=1" } 
+    }
 )
 
 config.font_size = 14.0
