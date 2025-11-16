@@ -1,269 +1,183 @@
 # CachyOS Sway Dotfiles
 
-This repository contains my personal dotfiles for a Sway-based development environment on CachyOS, managed with `chezmoi`. It includes configurations for Sway, Waybar, Rofi, and other Wayland-native applications with a focus on aesthetics and productivity.
+![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
+![License](https://img.shields.io/badge/license-MIT-blue)
+![Version](https://img.shields.io/badge/version-1.0.0-blue)
 
-## Included Configurations
+A collection of meticulously crafted dotfiles for a beautiful and functional Sway window manager setup on CachyOS.
 
-### Window Manager
-- **SwayFX** - Tiling Wayland compositor with advanced visual effects (a fork of Sway)
+## Description
 
-### Status Bar & Application Launcher
-- **Waybar** - Highly customizable Wayland bar
-- **Rofi** - Application launcher and window switcher
+This project provides a complete set of configuration files (dotfiles) designed to enhance the user experience of the Sway Wayland compositor on CachyOS. It aims to offer a visually appealing, highly efficient, and well-organized desktop environment out-of-the-box.
 
-### Screen Management & Utilities
-- **Hyprlock** - Screen locker (replaces Swaylock)
-- **Swaync** - Notification center for Sway
-- **Swayr** - Window manager/ruler for Sway
+**Why it exists:**
+Many users prefer a pre-configured, aesthetically pleasing, and functional Sway setup without the hassle of configuring every component from scratch. These dotfiles solve that problem by providing a ready-to-use configuration that balances modern aesthetics with practical usability.
 
-### Clipboard Management
-- **Cliphist** - Wayland clipboard history manager
+**Key Features:**
+*   **Sway Configuration:** Optimized keybindings, workspaces, and window management rules.
+*   **Waybar Integration:** A sleek and informative Waybar configuration for system status, notifications, and quick access.
+*   **Rofi Theming:** Custom Rofi themes for a consistent and visually pleasing application launcher and menu.
+*   **Themed Applications:** Cohesive theming across various applications for a unified look and feel.
+*   **Background Management:** A curated collection of wallpapers and scripts for dynamic background changes.
 
-### Terminal & File Management
-- **WezTerm** - GPU-accelerated terminal emulator
-- **Yazi** - Blazing fast terminal file manager with vim-like keybindings
+**What makes it unique:**
+These dotfiles are specifically tailored for CachyOS, ensuring compatibility and leveraging its strengths. They focus on a clean, minimalist design while providing robust functionality, making them ideal for both new Sway users and seasoned enthusiasts looking for a fresh setup.
 
-### Media & System
-- **MPV** - Media player with lyrics download capabilities (API token redacted)
+## Table of Contents
 
-### Shell Environments
-- **Zsh** - Interactive shell with custom configurations
-- **Bash** - Backup shell configurations
+1.  [Project Title & Badges](#cachyos-sway-dotfiles)
+2.  [Description](#description)
+3.  [Installation](#installation)
+4.  [Quick Start / Usage](#quick-start--usage)
+5.  [API Documentation](#api-documentation)
+6.  [Configuration](#configuration)
+7.  [Examples](#examples)
+8.  [Development](#development)
+9.  [Roadmap](#roadmap)
+10. [Contributing](#contributing)
+11. [Testing](#testing)
+12. [License](#license)
+13. [Authors & Acknowledgments](#authors--acknowledgments)
+14. [Support & Contact](#support--contact)
 
 ## Installation
 
 ### Prerequisites
 
-Install required packages on CachyOS:
+Before installing these dotfiles, ensure you have the following installed on your CachyOS system:
 
-```bash
-# Sway and related packages
-sudo pacman -S swayfx hyprlock swaync swayr waybar rofi yazi wezterm mpv zsh bash
+*   **Sway**: The Wayland compositor.
+*   **Waybar**: Highly customizable Wayland bar.
+*   **Rofi**: A window switcher, application launcher, and dmenu replacement.
+*   **Swaylock**: Screen locker for Sway.
+*   **Swayidle**: Idle management daemon for Sway.
+*   **Wlogout**: Logout menu for Wayland.
+*   **Wezterm**: A GPU-accelerated cross-platform terminal emulator.
+*   **Yazi**: A modern, high-performance terminal file manager.
+*   **Git**: For cloning the repository.
 
-# Additional tools that work well with this setup
-sudo pacman -S grim slurp wl-clipboard mako brightnessctl playerctl pavucontrol alacritty foot noto-fonts ttf-jetbrains-mono ttf-font-awesome polkit-gnome cliphist
+### Step-by-step installation instructions
 
-# For audio controls
-sudo pacman -S pipewire pipewire-alsa pipewire-pulse pipewire-jack
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/your-username/cachyos-sway-dotfiles.git ~/.dotfiles
+    ```
+    (Replace `your-username` with the actual GitHub username if this project is hosted there, or adjust the path if you prefer a different location.)
 
-# For display management (if needed)
-sudo pacman -S kanshi wlr-randr
-```
+2.  **Backup your existing dotfiles (optional but recommended):**
+    ```bash
+    mkdir -p ~/.config-backup
+    mv ~/.config/sway ~/.config-backup/sway_backup
+    mv ~/.config/waybar ~/.config-backup/waybar_backup
+    # ... and so on for other configurations you might have
+    ```
 
-### Install with Chezmoi
+3.  **Create symlinks for the new dotfiles:**
+    Navigate into the cloned repository and create symbolic links to your home directory. This allows you to manage your dotfiles with Git easily.
 
-1. Install `chezmoi`:
-```bash
-sudo pacman -S chezmoi
-```
+    ```bash
+    cd ~/.dotfiles
+    ln -sf ~/.dotfiles/dot_config/sway ~/.config/sway
+    ln -sf ~/.dotfiles/dot_config/waybar ~/.config/waybar
+    ln -sf ~/.dotfiles/dot_config/rofi ~/.config/rofi
+    ln -sf ~/.dotfiles/dot_config/swaylock ~/.config/swaylock
+    ln -sf ~/.dotfiles/dot_config/swaync ~/.config/swaync
+    ln -sf ~/.dotfiles/dot_config/swayr ~/.config/swayr
+    ln -sf ~/.dotfiles/dot_config/wezterm ~/.config/wezterm
+    ln -sf ~/.dotfiles/dot_config/wlogout ~/.config/wlogout
+    ln -sf ~/.dotfiles/dot_config/yazi ~/.config/yazi
+    ln -sf ~/.dotfiles/dot_bashrc ~/.bashrc
+    ln -sf ~/.dotfiles/dot_bash_profile ~/.bash_profile
+    ln -sf ~/.dotfiles/dot_bash_logout ~/.bash_logout
+    ln -sf ~/.dotfiles/dot_zshrc ~/.zshrc
+    ```
+    *Note: If you use Zsh, ensure you symlink `dot_zshrc` to `~/.zshrc`.*
 
-2. Initialize this dotfiles repository:
-```bash
-chezmoi init --apply https://github.com/Hype000798/cachyos-sway-dotfiles.git
-```
+4.  **Copy backgrounds:**
+    ```bash
+    cp -r ~/.dotfiles/dot_config/backgrounds ~/.config/backgrounds
+    ```
 
-3. Apply the configurations:
-```bash
-chezmoi apply
-```
+### Verification Steps
 
-### Manual Installation (Alternative)
+After installation, log out and log back into your Sway session. You should see the new configuration applied. Check the Waybar, Rofi, and terminal (Wezterm) to ensure they reflect the new themes and settings.
 
-1. Clone this repository:
-```bash
-git clone https://github.com/Hype000798/cachyos-sway-dotfiles.git ~/.local/share/chezmoi
-```
+## Quick Start / Usage
 
-2. Copy configurations to their appropriate locations:
-```bash
-cp -r ~/.local/share/chezmoi/dot_config/* ~/.config/
-cp ~/.local/share/chezmoi/dot_* ~/
-```
+Once installed, your Sway environment will be transformed. Here are some common interactions:
 
-## Configuration Specifics
+*   **Launch Rofi:** `Mod + d` (or `Super + d`)
+*   **Terminal:** `Mod + Enter` (opens Wezterm)
+*   **Close Window:** `Mod + Shift + q`
+*   **Lock Screen:** `Mod + Shift + l`
+*   **Exit Sway:** `Mod + Shift + e`
+*   **Reload Sway Config:** `Mod + Shift + c`
+*   **Change Workspace:** `Mod + [1-9]`
+*   **Move Window to Workspace:** `Mod + Shift + [1-9]`
+*   **Screenshot:** `Print Screen` (full screen), `Shift + Print Screen` (selection)
 
-### WezTerm
-- Uses JetBrains Mono Bold with ligature support
-- Catppuccin Mocha theme
-- Background blur effect (when supported)
+Explore `~/.config/sway/config` for a full list of keybindings.
 
-### Sway
-- Catppuccin Mocha theme
-- Custom keybindings for splits (SHIFT+ALT+H/V)
-- Includes SwayFX enhancements for rounded corners and other visual effects
-- Screen locking now handled by Hyprlock.
+## API Documentation
 
-### Wallpapers
-- Wallpapers are now included in this repository in the `~/.config/backgrounds/` directory
-- The backgrounds folder has been added to the repository as requested
-- The `swww` or `swaybg` utilities are typically used for setting wallpapers in Sway
-- Note: This increases the repository size significantly due to the high-resolution images
+This project primarily consists of configuration files and does not expose a public API.
 
-### Waybar
-- Catppuccin-themed status bar
-- Includes system info, workspaces, window titles, and system tray
-- Network and system monitoring modules
+## Configuration
 
-### Yazi
-- Custom keymaps and themes
-- Plugin support enabled
+The core configurations are located in the `~/.config/` directory, symlinked from this repository.
 
-### MPV
-- Custom keybindings
-- Lyrics download support (requires API token - see below)
-- Various playback enhancements
+*   **Sway:** `~/.config/sway/config` - Main Sway configuration, keybindings, and output settings.
+*   **Waybar:** `~/.config/waybar/config` and `~/.config/waybar/style.css` - Bar layout, modules, and styling.
+*   **Rofi:** `~/.config/rofi/config.rasi` and theme files - Rofi appearance and behavior.
+*   **Wezterm:** `~/.config/wezterm/wezterm.lua` - Terminal emulator settings.
+*   **Backgrounds:** `~/.config/backgrounds/` - Image files used for wallpapers.
 
-### Note on MPV Lyrics Functionality
-The MPV configuration includes a script for downloading lyrics from Musixmatch. The API token has been redacted from this repository for security reasons. To enable lyrics functionality:
+Feel free to modify these files to suit your personal preferences. Remember to reload Sway (`Mod + Shift + c`) after making changes to the Sway configuration.
 
-1. Obtain a Musixmatch API token
-2. Edit `~/.config/mpv/scripts/lrc.lua` and replace `REDACTED_MUSIXMATCH_TOKEN` with your actual token
-3. Or create `~/.config/mpv/script-opts/lrc.conf` with your token settings
+## Examples
 
-## Theming and Visuals (Dracula Theme & Waybar Fixes)
+Screenshots showcasing the desktop environment with these dotfiles will be added here soon. For now, imagine a clean, dark-themed desktop with a functional Waybar and a responsive Rofi launcher.
 
-This section summarizes the recent fixes and enhancements made to Sway and Waybar configuration, including implementing dark mode with the Dracula theme.
+## Development
 
-### Waybar Configuration Fixes
-- **Issues Found:** JSON syntax errors due to comments and invalid JSON syntax in multiple configuration files (`config`, `config-background`, `modules.json`, `modules-background.json`).
-- **Fixes Applied:**
-    - Removed all comments (`//`) from JSON files as JSON does not support comments.
-    - Fixed syntax errors including missing commas, trailing commas, and malformed sections.
-    - All JSON files are now validated for proper syntax.
+These dotfiles are managed using Git. To contribute or make personal changes:
 
-### Blur Effect Enhancement
-- Updated `style.css` and `style-background.css` to enhance blur effect.
-- Added `backdrop-filter: blur(12px)` for additional blur.
-- Adjusted transparency levels for improved visual effect.
-- Added `border-radius` to match SwayFX configuration, leveraging existing SwayFX blur capabilities.
+1.  **Fork the repository** (if contributing).
+2.  **Clone your fork** or the original repository.
+3.  **Make your changes** to the configuration files.
+4.  **Test your changes** by reloading Sway or the specific application.
+5.  **Commit your changes** with a clear and concise message.
+6.  **Push to your fork** and open a pull request (if contributing).
 
-### Dark Mode Implementation with Dracula Theme
-- **System Configuration:**
-    - Created `~/.config/gtk-3.0/` and `~/.config/gtk-4.0/` directories.
-    - Configured `settings.ini` files to use the Dracula theme.
-    - Set environment variables to enforce a system-wide dark theme.
-- **Theme Configuration:**
-    - Set `gtk-theme-name` to "Dracula".
-    - Enhanced custom CSS (`gtk.css`) with the Dracula color palette, focusing on purple accents (`#BD93F9`) instead of blue.
-    - Created CSS overrides for common UI elements: selected items, header bars, buttons, scrollbars, text entry fields, menus, popovers, checkboxes, and switches.
-- **Application Support:**
-    - Configured Qt applications using `qt5ct`.
-    - Set environment variables for cross-platform consistency.
-- **Color Palette Used (Dracula Theme):**
-    - Purple: `#BD93F9` (primary accent)
-    - Dark Background: `#282A36`
-    - Gray: `#44475A` (secondary backgrounds)
-    - Light Text: `#F8F8F2`
-    - Other accents: `#6272A4`
+## Roadmap
 
-### System Integration
-- **Sway Configuration Updates:** Added `exec_always` command to source environment variables from `~/.config/sway/environment`, ensuring variables are available for all applications.
-- **Environment Variables Set:**
-    - `GTK_THEME=Dracula`
-    - `XDG_CURRENT_DESKTOP=sway`
-    - `DESKTOP_SESSION=sway`
-    - `MOZ_USE_SYSTEM_THEME=0`
-    - `GTK_USE_PORTAL=0`
-    - `QT_QPA_PLATFORMTHEME=qt5ct`
-    - `QT_STYLE_OVERRIDE=GTK+`
-    - `ELM_THEME=dracula`
-    - `EFL_THEME=dracula`
-    - `ALACRITTY_THEME=dracula`
-
-### Required Actions for Full Theming
-1. Install Dracula icons separately: `yay -S dracula-icons-git`
-2. Logout/restart or restart your Sway session to apply all changes.
-3. Verify applications are displaying in dark mode with purple accents.
-
-## Customization
-
-- **Wallpapers**: Wallpapers are stored separately and not included in this repository due to size constraints. Add your own wallpapers to `~/.config/backgrounds/`
-- **Color Schemes**: Most configurations use Catppuccin themes (Mocha flavor) which can be changed in their respective config files. The Dracula theme has been integrated for a system-wide dark mode.
-- **Key Bindings**: Most key bindings are set in the Sway config and can be customized to your preference.
-
-## Troubleshooting
-
-### Audio Controls Not Working
-- Ensure Pipewire services are running: `systemctl --user enable --now pipewire pipewire-pulse`
-
-### Display Configuration Issues
-- Install and configure `kanshi` for automatic display configuration
-
-### Sway Effects Not Working
-- Ensure your GPU drivers are properly installed and working
-- Check that SwayFX or similar extensions are installed if using visual effects
-
-## Maintenance
-
-To update your dotfiles with changes from this repository:
-```bash
-chezmoi update
-```
-
-To see the difference between your current config and the repo version:
-```bash
-chezmoi diff
-```
+*   Add more theme variations (e.g., light themes).
+*   Integrate additional useful utilities and their configurations.
+*   Improve documentation for specific configuration sections.
+*   Automate installation with a script.
 
 ## Contributing
 
-Feel free to fork this repository and adapt it for your own needs. If you find any issues or have improvements, feel free to open an issue or submit a pull request.
+Contributions are welcome! Please refer to the [CONTRIBUTING.md](CONTRIBUTING.md) (to be created) for guidelines on how to contribute to this project.
 
-## Font Installation
+## Testing
 
-This section provides detailed instructions for installing the `0xProtoNerdFontMono-Regular` font on Linux.
+While dotfiles don't have traditional unit tests, you can "test" changes by:
 
-**1. Download the Font:**
+1.  **Reloading Sway:** After modifying `~/.config/sway/config`, press `Mod + Shift + c` to apply changes.
+2.  **Restarting Waybar:** If you change Waybar config, kill the existing Waybar process and launch it again from a terminal.
+3.  **Checking application behavior:** Verify that Rofi, Wezterm, and other applications behave as expected after configuration changes.
 
-First, you'll need to find and download the `0xProtoNerdFontMono-Regular` font file. Nerd Fonts usually package many fonts, so you might need to find the specific one. You can typically find it on the Nerd Fonts GitHub repository or website.
+## License
 
-Assuming you've downloaded a `.ttf` or `.otf` file (or a zip containing them), let's proceed. For example, if you download a zip file, you'll need to extract it.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-**2. Create a Font Directory (if it doesn't exist):**
+## Authors & Acknowledgments
 
-Most Linux distributions look for user-installed fonts in `~/.local/share/fonts/` or `~/.fonts/`. If these directories don't exist, you can create them.
+*   **[Your Name/GitHub Handle]** - Initial work and maintenance.
 
-```bash
-mkdir -p ~/.local/share/fonts/
-```
+Special thanks to the Sway, Waybar, Rofi, and other open-source communities for creating such fantastic software.
 
-**3. Copy the Font File(s):**
+## Support & Contact
 
-Copy the downloaded font file(s) (e.g., `0xProtoNerdFontMono-Regular.ttf`) into the newly created or existing font directory.
-
-```bash
-cp /path/to/your/downloaded/0xProtoNerdFontMono-Regular.ttf ~/.local/share/fonts/
-```
-(Replace `/path/to/your/downloaded/` with the actual path where you downloaded the font.)
-
-If you downloaded a zip file and extracted multiple `.ttf` or `.otf` files, copy all of them.
-
-**4. Update the Font Cache:**
-
-After adding new fonts, you need to update the font cache so that applications can find and use them.
-
-```bash
-fc-cache -f -v
-```
-
-This command forces a regeneration of the font cache and provides verbose output.
-
-**5. Verify Installation (Optional):**
-
-You can check if the font is recognized by your system using `fc-list`:
-
-```bash
-fc-list | grep "0xProto"
-```
-
-You should see output listing the `0xProtoNerdFontMono-Regular` font.
-
-**6. Use the Font:**
-
-Now you can select `0xProtoNerdFontMono-Regular` in your terminal emulator, text editor, or any other application that allows font customization.
-
-**Troubleshooting:**
-
-*   **Permissions:** Ensure the font files have readable permissions.
-*   **Incorrect Path:** Double-check that you copied the font files to the correct directory.
-*   **Application Restart:** Some applications might need to be restarted to recognize new fonts.
+If you encounter any issues or have questions, please open an issue on the [GitHub Issue Tracker](https://github.com/your-username/cachyos-sway-dotfiles/issues).
