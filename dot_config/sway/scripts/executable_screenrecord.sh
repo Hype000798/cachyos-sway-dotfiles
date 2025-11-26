@@ -5,7 +5,7 @@
 
 # Directory to save recordings
 RECORDINGS_DIR="$HOME/Videos/Recordings"
-mkdir -p "$RECORDINGS_DIR"
+mkdir -p "$HOME/Pictures" "$HOME/Videos" "$RECORDINGS_DIR"
 
 # Function to start recording
 start_recording() {
