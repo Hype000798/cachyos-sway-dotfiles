@@ -1,0 +1,15 @@
+# Wofi configuration
+width=600
+height=600
+location=center
+show=drun
+prompt=search
+gtk_modules=appmenu-gtk-module
+no_actions=true
+insensitive=true
+allow_markup=true
+content_width=250
+filter_rate=150
+no_cursor=true
+lines=15
+icon-theme=catppuccin-icons

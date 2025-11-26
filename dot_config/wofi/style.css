@@ -1,0 +1,120 @@
+/* Catppuccin Mocha theme for Wofi */
+
+/* Base colors */
+@define-color base   #1e1e2e; /* Surface 0 */
+@define-color mantle #181825; /* Surface 1 */
+@define-color crust  #11111b; /* Surface 2 */
+
+/* Text colors */
+@define-color text     #cdd6f4; /* Text */
+@define-color subtext0 #a6adc8; /* Subtext 0 */
+@define-color subtext1 #bac2de; /* Subtext 1 */
+
+/* Surface colors */
+@define-color surface0 #313244; /* Surface 0 */
+@define-color surface1 #45475a; /* Surface 1 */
+@define-color surface2 #585b70; /* Surface 2 */
+
+/* Accent colors */
+@define-color blue      #89b4fa;
+@define-color lavender  #b4befe;
+@define-color sapphire  #74c7ec;
+@define-color sky       #89dceb;
+@define-color teal      #94e2d5;
+@define-color green     #a6e3a1;
+@define-color yellow    #f9e2af;
+@define-color peach     #fab387;
+@define-color maroon    #eba0ac;
+@define-color red       #f38ba8;
+@define-color mauve     #cba6f7;
+@define-color pink      #f5c2e7;
+@define-color flamingo  #f2cdcd;
+@define-color rosewater #f5e0dc;
+
+/* Window */
+#window {
+    margin: 0px;
+    border: 2px solid @blue;
+    border-radius: 12px;
+    background-color: @base;
+    color: @text;
+    font-family: "Fira Sans", sans-serif;
+    font-size: 14px;
+}
+
+/* Input field */
+#input {
+    margin: 5px;
+    padding: 6px 10px;
+    border: 1px solid @surface0;
+    border-radius: 8px;
+    background-color: @surface0;
+    color: @text;
+    font-size: 14px;
+    outline: none;
+}
+
+#input:focus {
+    border-color: @blue;
+}
+
+/* Entry list */
+#outer-box {
+    padding: 5px;
+}
+
+#entry {
+    padding: 6px;
+    border-radius: 6px;
+    background-color: @base;
+    color: @text;
+    margin: 2px 0px; /* Reduced margin to make items closer together */
+}
+
+#entry:selected {
+    background-color: @surface1;
+    color: @text;
+}
+
+#entry:hover {
+    background-color: @surface0;
+    color: @text;
+}
+
+#entry:selected:hover {
+    background-color: @surface2;
+    color: @text;
+}
+
+/* Text in entries */
+#text {
+    color: @text;
+}
+
+#entry:selected #text {
+    color: @text;
+}
+
+/* Scrollbar */
+#scroll {
+    margin: 5px 0px;
+    border-radius: 8px;
+    background-color: @surface0;
+    color: @text;
+}
+
+#scroll:hover {
+    background-color: @surface1;
+}
+
+#content {
+    margin: 0px 5px 0px 0px;
+    border-radius: 8px;
+    background-color: @base;
+    color: @text;
+}
+
+#arrow {
+    background-color: @base;
+    color: @text;
+}
