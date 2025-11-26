@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
 
-# Set the directory where the backgrounds are stored
+# Simple random wallpaper script using swww
+set -euo pipefail
+
 BACKGROUND_DIR="$HOME/.config/backgrounds"
 
-# Get the list of backgrounds
-BACKGROUND_LIST=()
-while IFS= read -r -d '' file; do
-    BACKGROUND_LIST+=("$file")
-done < <(find "$BACKGROUND_DIR" -maxdepth 1 -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.gif" -o -iname "*.webp" \) -print0)
+if [[ ! -d "$BACKGROUND_DIR" ]]; then
+    notify-send "Random Background" "Directory not found: $BACKGROUND_DIR"
+    exit 1
+fi
 
 # Determine mode: if arg is "random", use random, otherwise cycle
 MODE="cycle"
@@ -16,76 +17,62 @@ if [ "$1" = "random" ]; then
 fi
 
 if [ "$MODE" = "random" ]; then
-    # Select a random background
-    TOTAL_BG_COUNT=${#BACKGROUND_LIST[@]}
-    if [ $TOTAL_BG_COUNT -gt 0 ]; then
-        # Generate random index
-        RANDOM_INDEX=$(( RANDOM % TOTAL_BG_COUNT ))
-        NEXT_BACKGROUND="${BACKGROUND_LIST[$RANDOM_INDEX]}"
-    else
-        echo "No background files found in $BACKGROUND_DIR"
+    # pick a random file for random mode
+    background=$(find "$BACKGROUND_DIR" -type f \( -iname '*.png' -o -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.gif' -o -iname '*.webp' \) | shuf -n 1)
+
+    if [[ -z "$background" ]]; then
+        notify-send "Random Background" "No images found in $BACKGROUND_DIR"
         exit 1
     fi
 else
-    # Cycling mode - get current wallpaper from swww_init_simple.sh
-    CURRENT_FILE=$(grep -oP "(?<=swww img \")[^\"]*(?=\"\s+--transition-type any --transition-step 63 --transition-angle 0 --transition-duration 2 --transition-fps 60)" "$HOME/.config/sway/scripts/swww_init_simple.sh" 2>/dev/null | head -n1)
+    # For cycling mode - get current wallpaper from swww_init_simple.sh
+    current_file=$(grep -oP "(?<=swww img \")[^\"]*(?=\"\s+--transition-type)" "$HOME/.config/sway/scripts/swww_init_simple.sh" 2>/dev/null | head -n1)
 
-    # If not found with quotes, try without quotes
-    if [ -z "$CURRENT_FILE" ]; then
-        CURRENT_FILE=$(grep -oP "(?<=swww img )[^\s]+(?=\s+--transition-type any --transition-step 63 --transition-angle 0 --transition-duration 2 --transition-fps 60)" "$HOME/.config/sway/scripts/swww_init_simple.sh" 2>/dev/null | head -n1)
-    fi
-
-    if [ -z "$CURRENT_FILE" ]; then
-        # If not found in swww script, start from first image
-        CURRENT_FILE="${BACKGROUND_LIST[0]}"
+    if [ -z "$current_file" ]; then
+        # If not found in swww script, start with a random image
+        background=$(find "$BACKGROUND_DIR" -type f \( -iname '*.png' -o -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.gif' -o -iname '*.webp' \) | shuf -n 1)
     else
         # The grep result might be a relative path, ensure it's a full path
-        if [[ ! "$CURRENT_FILE" =~ ^/ ]]; then
-            # It's relative, make it full path
-            CURRENT_FILE="$HOME/.config/backgrounds/$CURRENT_FILE"
+        if [[ ! "$current_file" =~ ^/ ]]; then
+            current_file="$BACKGROUND_DIR/$current_file"
         fi
+
+        # Get all background files and find the current one
+        background_files=()
+        while IFS= read -r -d '' file; do
+            background_files+=("$file")
+        done < <(find "$BACKGROUND_DIR" -maxdepth 1 -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.gif" -o -iname "*.webp" \) -print0)
+
+        # Sort the array to ensure consistent ordering
+        IFS=$'\n' sorted_files=($(sort <<<"${background_files[*]}"))
+        unset IFS
+
+        # Find current file index and get next file
+        current_index=0
+        for i in "${!sorted_files[@]}"; do
+            if [[ "${sorted_files[$i]}" == "$current_file" ]]; then
+                current_index=$i
+                break
+            fi
+        done
+
+        # Calculate next index (cycling)
+        next_index=$(( (current_index + 1) % ${#sorted_files[@]} ))
+        background="${sorted_files[$next_index]}"
     fi
-
-    # Find the index of the current background in the list
-    CURRENT_INDEX=0
-    FOUND_CURRENT=false
-    current_filename=$(basename "$CURRENT_FILE")
-
-    for i in "${!BACKGROUND_LIST[@]}"; do
-        list_filename=$(basename "${BACKGROUND_LIST[$i]}")
-        if [[ "$list_filename" == "$current_filename" ]]; then
-            CURRENT_INDEX=$i
-            FOUND_CURRENT=true
-            break
-        fi
-    done
-
-    # Calculate the index of the next background (cycle to next)
-    TOTAL_BG_COUNT=${#BACKGROUND_LIST[@]}
-    
-    if [[ "$FOUND_CURRENT" == true ]]; then
-        NEXT_INDEX=$(( (CURRENT_INDEX + 1) % TOTAL_BG_COUNT ))
-    else
-        NEXT_INDEX=0  # Start from first if current not found
-    fi
-
-    NEXT_BACKGROUND="${BACKGROUND_LIST[$NEXT_INDEX]}"
 fi
 
-# Set the background using swww (modern wallpaper setter)
+# Set the background using swww
 if command -v swww &>/dev/null; then
-    swww img "$NEXT_BACKGROUND" --transition-type any --transition-step 63 --transition-angle 0 --transition-duration 2 --transition-fps 60
+    swww img "$background" --transition-type any --transition-step 63 --transition-angle 0 --transition-duration 2 --transition-fps 60
 else
     # Fallback to swaybg if swww not available
     killall swaybg 2>/dev/null || true
-    swaybg --output '*' --mode fill --image "$NEXT_BACKGROUND" &
+    swaybg --output '*' --mode fill --image "$background" &
 fi
 
 # Update the swww initialization script to use this wallpaper on startup
-sed -i "s|^    swww img .* --transition-type any --transition-step 63 --transition-angle 0 --transition-duration 2 --transition-fps 60|    swww img \"$NEXT_BACKGROUND\" --transition-type any --transition-step 63 --transition-angle 0 --transition-duration 2 --transition-fps 60|" "$HOME/.config/sway/scripts/swww_init_simple.sh"
-
-# Also update sway config for compatibility (though not used if using swww)
-sed -i "s|^output \* bg.*|output \* bg $NEXT_BACKGROUND fill|" "$HOME/.config/sway/config" 2>/dev/null || true
+sed -i "s|^swww img \".*\" --transition-type.*|swww img \"$background\" --transition-type any --transition-step 63 --transition-angle 0 --transition-duration 2 --transition-fps 60|" "$HOME/.config/sway/scripts/swww_init_simple.sh"
 
 # Send a notification with the new background name
-notify-send -i "$NEXT_BACKGROUND" "Background changed" "$(basename "$NEXT_BACKGROUND") - $MODE mode"
+notify-send -i "$background" "Background changed" "$(basename "$background") - $MODE mode"
