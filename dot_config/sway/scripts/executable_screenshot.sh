@@ -12,8 +12,8 @@ case "$1" in
         notify-send "Screenshot" "Window screenshot copied to clipboard"
         ;;
     "screen")
-        grim -t png "$HOME/Pictures/screenshot_$(date +%Y%m%d_%H%M%S).png"
-        notify-send "Screenshot" "Full screen screenshot saved"
+        grim -t png "$HOME/Pictures/screenshot_$(date +%Y%m%d_%H%M%S).png" && grim - | wl-copy
+        notify-send "Screenshot" "Full screen screenshot saved and copied to clipboard"
         ;;
     *)
         echo "Usage: $0 {area|window|screen}"
