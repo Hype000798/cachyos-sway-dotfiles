@@ -28,15 +28,15 @@ if [ "$MODE" = "random" ]; then
     fi
 else
     # Cycling mode - get current wallpaper from swww_init_simple.sh
-    CURRENT_FILE=$(grep -oP "(?<=swww img \")[^\"]*(?=\"\s+--transition-type none)" "$HOME/.config/sway/scripts/swww_init_simple.sh" 2>/dev/null | head -n1)
-    
+    CURRENT_FILE=$(grep -oP "(?<=swww img \")[^\"]*(?=\"\s+--transition-type any --transition-step 63 --transition-angle 0 --transition-duration 2 --transition-fps 60)" "$HOME/.config/sway/scripts/swww_init_simple.sh" 2>/dev/null | head -n1)
+
     # If not found with quotes, try without quotes
     if [ -z "$CURRENT_FILE" ]; then
-        CURRENT_FILE=$(grep -oP "(?<=swww img )[^\s]+(?=\s+--transition-type none)" "$HOME/.config/sway/scripts/swww_init_simple.sh" 2>/dev/null | head -n1)
+        CURRENT_FILE=$(grep -oP "(?<=swww img )[^\s]+(?=\s+--transition-type any --transition-step 63 --transition-angle 0 --transition-duration 2 --transition-fps 60)" "$HOME/.config/sway/scripts/swww_init_simple.sh" 2>/dev/null | head -n1)
     fi
 
-    if [ -z "$CURRENT_FILE" ] || [[ "$CURRENT_FILE" == *"/Pictures/Wallpaper-4k.jpg"* ]]; then
-        # If not found in swww script or it's the default, start from first image
+    if [ -z "$CURRENT_FILE" ]; then
+        # If not found in swww script, start from first image
         CURRENT_FILE="${BACKGROUND_LIST[0]}"
     else
         # The grep result might be a relative path, ensure it's a full path
