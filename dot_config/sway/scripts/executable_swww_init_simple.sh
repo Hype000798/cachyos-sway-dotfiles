@@ -15,7 +15,7 @@ sleep 2
 
 # Set the wallpaper
 if [ -f "$HOME/Pictures/Wallpaper-4k.jpg" ]; then
-    swww img "/home/hype/.config/backgrounds/01. One Dark.png" --transition-type none
+    swww img "/home/hype/.config/backgrounds/02. Monokai.png" --transition-type any --transition-step 63 --transition-angle 0 --transition-duration 2 --transition-fps 60
 else
     echo "Wallpaper file does not exist: $HOME/Pictures/Wallpaper-4k.jpg"
 fi

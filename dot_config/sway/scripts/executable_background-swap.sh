@@ -74,7 +74,7 @@ fi
 
 # Set the background using swww (modern wallpaper setter)
 if command -v swww &>/dev/null; then
-    swww img "$NEXT_BACKGROUND" --transition-type none
+    swww img "$NEXT_BACKGROUND" --transition-type any --transition-step 63 --transition-angle 0 --transition-duration 2 --transition-fps 60
 else
     # Fallback to swaybg if swww not available
     killall swaybg 2>/dev/null || true
@@ -82,7 +82,7 @@ else
 fi
 
 # Update the swww initialization script to use this wallpaper on startup
-sed -i "s|^    swww img .* --transition-type none|    swww img \"$NEXT_BACKGROUND\" --transition-type none|" "$HOME/.config/sway/scripts/swww_init_simple.sh"
+sed -i "s|^    swww img .* --transition-type any --transition-step 63 --transition-angle 0 --transition-duration 2 --transition-fps 60|    swww img \"$NEXT_BACKGROUND\" --transition-type any --transition-step 63 --transition-angle 0 --transition-duration 2 --transition-fps 60|" "$HOME/.config/sway/scripts/swww_init_simple.sh"
 
 # Also update sway config for compatibility (though not used if using swww)
 sed -i "s|^output \* bg.*|output \* bg $NEXT_BACKGROUND fill|" "$HOME/.config/sway/config" 2>/dev/null || true
