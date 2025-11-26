@@ -21,12 +21,6 @@ blur_passes 2
 shadows enable
 
 # Apply visual effects to specific UI elements
-layer_effects "waybar" {
-    blur enable
-    blur_xray enable
-    shadows enable
-    corner_radius 10
-}
 
 layer_effects "swaync" {
     blur enable
