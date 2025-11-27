@@ -14,4 +14,4 @@ swww-daemon &
 sleep 2
 
 # Set the wallpaper
-swww img "/home/hype/.config/backgrounds/01. Rosé Pine.jpeg" --transition-type any --transition-step 63 --transition-angle 0 --transition-duration 2 --transition-fps 60
+swww img "/home/hype/.config/backgrounds/Wallpaper-4k.jpg" --transition-type any --transition-step 63 --transition-angle 0 --transition-duration 2 --transition-fps 60
