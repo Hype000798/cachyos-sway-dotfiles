@@ -46,7 +46,7 @@ These dotfiles are specifically tailored for CachyOS, ensuring compatibility and
 
 ## Installation
 
-These dotfiles are managed using `chezmoi` and are designed to be used with a private GitHub repository for secure storage. Secure setup involves using SSH keys.
+These dotfiles are managed using `chezmoi`. Secure setup involves using SSH keys for private repositories, or HTTPS for public ones.
 
 ### Prerequisites
 
@@ -54,17 +54,22 @@ Before installing these dotfiles, ensure you have the following installed on you
 
 *   **`chezmoi`**: Install via your package manager (e.g., `sudo pacman -S chezmoi`).
 *   **Git**: For cloning the repository.
-*   **SSH Keys**: If you haven't already, generate an SSH key pair and add your public key to your GitHub account. For instructions, refer to GitHub's official documentation on [generating SSH keys](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) and [adding it to your GitHub account](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account).
+*   **SSH Keys (for private repositories):** If you haven't already, generate an SSH key pair and add your public key to your GitHub account. For instructions, refer to GitHub's official documentation on [generating SSH keys](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) and [adding it to your GitHub account](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account).
 
-### Recommended Installation (Using SSH)
+### Recommended Installation (Automated with Setup Script)
 
 This method automates the setup process, including comprehensive package installation via the provided script.
 
-1.  **Initialize `chezmoi`:** Use the SSH URL of your private repository. This command will clone the repository to `~/.local/share/chezmoi` and apply the dotfiles to your system.
-    ```bash
-    chezmoi init --apply git@github.com:Hype000798/cachyos-sway-dotfiles.git
-    ```
-    (Ensure your SSH agent is running and your key is loaded.)
+1.  **Initialize `chezmoi`:** Use the URL of your repository. This command will clone the repository to `~/.local/share/chezmoi` and apply the dotfiles to your system.
+    *   **Using SSH (Recommended for private repositories):**
+        ```bash
+        chezmoi init --apply git@github.com:Hype000798/cachyos-sway-dotfiles.git
+        ```
+        (Ensure your SSH agent is running and your key is loaded.)
+    *   **Using HTTPS (Suitable for public repositories or if SSH is not set up):**
+        ```bash
+        chezmoi init --apply https://github.com/Hype000798/cachyos-sway-dotfiles.git
+        ```
 2.  **Run the Setup Script:** The `executable_arch-setup-script.sh` is now available locally in your `chezmoi` source directory (e.g., `~/.local/share/chezmoi/executable_arch-setup-script.sh`). Execute it to install system packages and configure CachyOS repositories:
     ```bash
     ~/.local/share/chezmoi/executable_arch-setup-script.sh
@@ -76,12 +81,16 @@ This method automates the setup process, including comprehensive package install
 If you prefer a more granular setup or need to inspect each step:
 
 1.  **Clone the Repository:**
-    ```bash
-    git clone git@github.com:Hype000798/cachyos-sway-dotfiles.git ~/.local/share/chezmoi
-    ```
-    (Ensure your SSH agent is running and your key is loaded.)
+    *   **Using SSH:**
+        ```bash
+        git clone git@github.com:Hype000798/cachyos-sway-dotfiles.git ~/.local/share/chezmoi
+        ```
+    *   **Using HTTPS:**
+        ```bash
+        git clone https://github.com/Hype000798/cachyos-sway-dotfiles.git ~/.local/share/chezmoi
+        ```
 2.  **Install Prerequisites:** Manually install all necessary software (Sway, Waybar, Fuzzel, Hyprlock, Wezterm, etc.) using your package manager. You can refer to `~/.local/share/chezmoi/executable_arch-setup-script.sh` for a comprehensive list of recommended packages.
-3.  **Apply Dotfiles:
+3.  **Apply Dotfiles:**
     ```bash
     chezmoi apply
     ```
