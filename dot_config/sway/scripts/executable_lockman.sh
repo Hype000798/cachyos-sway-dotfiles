@@ -1,9 +1,3 @@
 #!/usr/bin/env sh
-# Times the screen off and puts it to background
-swayidle \
-    timeout  5 'swaymsg "output * dpms off"' \
-    resume 'swaymsg "output * dpms on"' &
-# Locks the screen immediately
+# Simply locks the screen immediately
 hyprlock
-# Kills last background task so idle timer doesn't keep running
-kill %%

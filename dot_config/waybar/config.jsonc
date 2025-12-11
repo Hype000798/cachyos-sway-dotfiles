@@ -1,0 +1,149 @@
+{
+    "layer": "top",
+    "position": "top",
+    "height": 36,
+    "margin-top": 10,
+    "margin-bottom": 0,
+    "margin-left": 10,
+    "margin-right": 10,
+    "spacing": 2,
+    "modules-left": [
+
+        "clock",
+        "disk",
+        "cpu",
+        "memory",
+        "temperature",
+        "custom/uptime"
+    ],
+    "modules-center": [
+        "sway/workspaces"
+    ],
+    "modules-right": [
+        "sway/window",
+        "tray",
+        "idle_inhibitor",
+        "mpris",
+        "backlight",
+        "bluetooth",
+        "pulseaudio",
+        "network",
+        "battery"
+    ],
+    "sway/workspaces": {
+        "format": "{name}",
+        "format-icons": {
+            "1": "",
+            "2": "", 
+            "3": "",
+            "4": "",
+            "5": "",
+            "6": "",
+            "7": "",
+            "8": "",
+            "9": "",
+            "10": "",
+            "urgent": "",
+            "focused": "",
+            "default": ""
+        }
+    },
+    "sway/window": {
+        "format": "{}",
+        "max-length": 50
+    },
+    "clock": {
+        "format": "{:%H:%M:%S}",
+        "format-alt": "{:%H:%M}"
+    },
+    "cpu": {
+        "format": "{usage}% ",
+        "interval": 1
+    },
+    "memory": {
+        "format": "{}% "
+    },
+    "temperature": {
+        "format": "{temperatureC}°C ",
+        "critical-threshold": 80,
+        "format-critical": "{temperatureC}°C "
+    },
+    "disk": {
+        "format": "{percentage_used}% ",
+        "interval": 30
+    },
+    "custom/uptime": {
+        "format": "{} ",
+        "exec": "echo $(awk '{print int($1/86400)\"w \"int(($1%86400)/3600)\"h \"int(($1%3600)/60)\"m\"}' /proc/uptime)",
+        "interval": 60
+    },
+
+    "backlight": {
+        "format": "{percent}% {icon}",
+        "format-icons": ["", "", "", ""]
+    },
+    "pulseaudio": {
+        "format": "{volume}% {icon} {format_source}",
+        "format-bluetooth": "{volume}% {icon} {format_source}",
+        "format-bluetooth-muted": "ﱝ {icon} {format_source}",
+        "format-muted": "ﱝ {format_source}",
+        "format-icons": {
+            "headphone": "󰋋",
+            "hands-free": "󰋎",
+            "headset": "󰋎",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": ["", "", ""]
+        },
+        "on-click": "pavucontrol"
+    },
+    "network": {
+        "format-wifi": "{essid} ({signalStrength}%) {bandwidthUpBits} {bandwidthDownBits} ",
+        "format-ethernet": "{ifname}: {bandwidthUpBits} {bandwidthDownBits} ",
+        "format-linked": "{ifname} (No IP) ",
+        "format-disconnected": "Disconnected ⚠",
+        "tooltip-format-wifi": "{ifname} via {gwaddr} \nSignal strength: {signalStrength}%\nUp: {bandwidthUpBits}\nDown: {bandwidthDownBits}"
+    },
+    "battery": {
+        "device": "BAT0",
+        "format": "{capacity}% {icon}",
+        "format-charging": "{capacity}% ",
+        "format-plugged": "{capacity}% ",
+        "format-icons": ["", "", "", "", ""],
+        "states": {
+            "good": 95,
+            "warning": 30,
+            "critical": 15
+        }
+    },
+    "idle_inhibitor": {
+        "format": "{icon}",
+        "format-icons": {
+            "activated": "",
+            "deactivated": ""
+        }
+    },
+    "tray": {
+        "icon-size": 15,
+        "spacing": 5
+    },
+    "mpris": {
+        "format": "{player_icon} {title} - {artist}",
+        "format-alt": "{player_icon} {title}",
+        "player-icons": {
+            "default": "🎵",
+            "spotify": "",
+            "vlc": "🎬"
+        },
+        "title-len": 25,
+        "artist-len": 25
+    },
+    "bluetooth": {
+        "format": "{} ",
+        "format-device-default": "{alias} {icon}",
+        "format-no-paired": "Off",
+        "format-off": "Off",
+        "on-click": "blueman-manager"
+    }
+}

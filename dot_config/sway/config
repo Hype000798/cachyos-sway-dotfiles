@@ -51,7 +51,8 @@ focus_follows_mouse always
 
 exec swaync &
 
-exec_always dms run &
+#exec_always dms run &
+
 
 
 
