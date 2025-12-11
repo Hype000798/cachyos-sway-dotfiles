@@ -1,8 +1,10 @@
 #!/bin/bash
 
 # Arch Linux Setup Script with CachyOS Repository
-# This script checks for CachyOS repository, adds it if missing,
-# and installs packages similar to your current system setup
+# 1. Adds CachyOS Repos
+# 2. Reinstalls all native packages (to apply CachyOS optimizations)
+# 3. Installs AUR helpers (yay/paru) from CachyOS repo
+# 4. Installs user-defined packages
 
 set -e  # Exit on any error
 
@@ -13,406 +15,212 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
-# Function to print colored output
-print_status() {
-    echo -e "${BLUE}[INFO]${NC} $1"
-}
+# --- Helper Functions ---
 
-print_success() {
-    echo -e "${GREEN}[SUCCESS]${NC} $1"
-}
+print_status() { echo -e "${BLUE}[INFO]${NC} $1"; }
+print_success() { echo -e "${GREEN}[SUCCESS]${NC} $1"; }
+print_warning() { echo -e "${YELLOW}[WARNING]${NC} $1"; }
+print_error() { echo -e "${RED}[ERROR]${NC} $1"; }
 
-print_warning() {
-    echo -e "${YELLOW}[WARNING]${NC} $1"
-}
-
-print_error() {
-    echo -e "${RED}[ERROR]${NC} $1"
-}
-
-# Function to ask user for confirmation
 ask_confirmation() {
     local prompt="$1"
     local default="${2:-n}"
     local response
-
     echo -n -e "${YELLOW}${prompt} (Y/n): ${NC}"
     read -r response
-
-    # If response is empty, use default
-    if [[ -z "$response" ]]; then
-        response=$default
-    fi
-
-    if [[ $response =~ ^[Yy]$ ]]; then
-        return 0
-    else
-        return 1
-    fi
+    [[ -z "$response" ]] && response=$default
+    [[ $response =~ ^[Yy]$ ]]
 }
 
-# NEW FUNCTION: Bootstrap yay from AUR
-install_yay() {
-    print_status "yay not found. Installing yay from AUR..."
-    
-    # Ensure git and base-devel are present
-    sudo pacman -S --needed --noconfirm git base-devel
-    
-    # Clone and build
-    cd /opt
-    sudo git clone https://aur.archlinux.org/yay-bin.git
-    sudo chown -R "$USER:$USER" ./yay-bin
-    cd yay-bin
-    makepkg -si --noconfirm
-    
-    cd ../
-    # Optional: cleanup
-    # sudo rm -rf yay-bin
-    
-    print_success "yay installed successfully"
-}
-
-# Check if running as root
 if [[ $EUID -eq 0 ]]; then
-   print_error "This script should not be run as root"
+   print_error "This script should not be run as root (it invokes sudo where needed)."
    exit 1
 fi
 
-# Function to check if CachyOS repository is already added
+# --- CachyOS Repository Functions ---
+
 check_cachyos_repo() {
-    print_status "Checking if CachyOS repository is already added..."
-    
-    if grep -q "^\[cachyos\]" /etc/pacman.conf; then
-        print_success "CachyOS repository is already added to pacman.conf"
+    if grep -q "^\\[cachyos\\]" /etc/pacman.conf; then
         return 0
     else
-        print_warning "CachyOS repository not found in pacman.conf"
         return 1
     fi
 }
 
-# Function to add CachyOS repository
 add_cachyos_repo() {
     print_status "Adding CachyOS repository..."
-
-    # Backup pacman.conf before modification
+    
+    # Backup pacman.conf
     sudo cp /etc/pacman.conf "/etc/pacman.conf.backup.$(date +%Y%m%d_%H%M%S)"
-    print_status "Backup of pacman.conf created"
 
-    # Download and install the CachyOS repository
+    # Download installer
     if command -v curl >/dev/null 2>&1; then
         curl https://mirror.cachyos.org/cachyos-repo.tar.xz -o cachyos-repo.tar.xz
     elif command -v wget >/dev/null 2>&1; then
         wget https://mirror.cachyos.org/cachyos-repo.tar.xz
     else
-        print_error "Neither curl nor wget found. Please install one of them."
+        print_error "Neither curl nor wget found."
         exit 1
     fi
 
     tar xvf cachyos-repo.tar.xz
     cd cachyos-repo
-
-    # Run the CachyOS repository installer
     chmod +x ./cachyos-repo.sh
     sudo ./cachyos-repo.sh
-
     cd ..
     rm -rf cachyos-repo cachyos-repo.tar.xz
 
-    print_success "CachyOS repository has been added"
+    print_success "CachyOS repository added."
 }
 
-# Function to update package databases
-update_package_db() {
-    print_status "Updating package databases..."
-    sudo pacman -Sy
-    print_success "Package databases updated"
+# --- Core Logic Functions ---
+
+reinstall_optimized_packages() {
+    print_status "Reinstalling all native packages to use CachyOS optimized versions..."
+    print_warning "This might take a while depending on your internet speed."
+    
+    # Get list of native packages (excluding AUR/foreign)
+    # We pipe this into pacman to reinstall them
+    if pacman -Qqn | sudo pacman -S - --noconfirm --needed; then
+        print_success "All native packages reinstalled/optimized."
+    else
+        print_error "Failed to reinstall packages."
+        exit 1
+    fi
 }
 
-# List of packages to install based on the current system
+install_aur_helpers_from_repo() {
+    print_status "Installing yay and paru from CachyOS repository..."
+    # Since CachyOS repo is now added, we can just use pacman
+    sudo pacman -S --needed --noconfirm yay paru
+    print_success "yay and paru installed."
+}
+
+handle_sway_conflict() {
+    # CRITICAL FIX: You cannot install swayfx if sway is installed.
+    # Since you are on a fresh sway install, 'sway' is likely present.
+    # We must remove 'sway' to allow 'swayfx' to install.
+    
+    if pacman -Qi sway > /dev/null 2>&1; then
+        print_warning "Detected 'sway' installed. Removing it to allow 'swayfx' installation..."
+        # -Rdd skips dependency checks (safe here because we immediately install swayfx which provides sway)
+        sudo pacman -Rdd sway --noconfirm
+        print_success "Standard sway removed (will be replaced by swayfx)."
+    fi
+}
+
+# --- Package List ---
+
 PACKAGES=(
-    # Essential packages
-    "base"
+    # Essential
     "base-devel"
     "git"
-    "yay"
-    "paru"
+    
+    # Window Manager (SwayFX)
+    "swayfx" 
+    "swayidle" "swaybg" "waybar" "waypaper" "wl-clipboard" "cliphist" 
+    "autotiling-rs" "swaync" "swayosd" "swayimg" "sway-contrib" 
+    "grim" "slurp" "wofi"
 
-    # Sway window manager and related packages
-    "swayfx"
-    "swayidle"
-    "swaybg"
-    "waybar"
-    "waypaper"
-    "wl-clipboard"
-    "cliphist"
-    "autotiling-rs"
-    "swaync"
-    "swayosd"
-    "swayimg"
-    "sway-contrib"
-    "grim"
-    "slurp"
-    "wofi"
+    # Terminal
+    "wezterm" "fuzzel" "bat" "alacritty" "foot" "eza" "zsh" "oh-my-posh"
 
-    # Terminal and utilities
-    "wezterm"
-    "fuzzel"
-    "bat"
-    "alacritty"
-    "foot"
-    "eza"
-    "zsh"
-    "oh-my-posh"
+    # Apps
+    "brave-bin" "nemo" "nemo-fileroller" "nemo-python" "nemo-terminal" 
+    "nemo-preview" "nemo-seahorse" "nemo-emblems" "nemo-image-converter" 
+    "nemo-pastebin" "nemo-audio-tab" "firefox" "firefox-ublock-origin" 
+    "visual-studio-code-bin" "zed" "yazi"
 
-    # Applications
-    "brave-bin"
-    "nemo"
-    "nemo-fileroller"
-    "nemo-python"
-    "nemo-terminal"
-    "nemo-preview"
-    "nemo-seahorse"
-    "nemo-emblems"
-    "nemo-image-converter"
-    "nemo-pastebin"
-    "nemo-audio-tab"
-    "firefox"
-    "firefox-ublock-origin"
-    "visual-studio-code-bin"
-    "zed"
-    "yazi"
+    # Audio/Pipewire
+    "pipewire" "pipewire-alsa" "pipewire-pulse" "pipewire-jack" 
+    "wireplumber" "gst-plugin-pipewire" "pavucontrol" "pasystray"
 
-    # Audio system
-    "pipewire"
-    "pipewire-alsa"
-    "pipewire-pulse"
-    "pipewire-jack"
-    "wireplumber"
-    "gst-plugin-pipewire"
+    # Utilities
+    "swww" "brightnessctl" "networkmanager" "networkmanager-dmenu" 
+    "network-manager-applet" "blueman" "bluez" "bluez-utils" "iwd" 
+    "wireless_tools" "xdg-utils" "htop" "neofetch" "bleachbit" "timeshift" 
+    "reflector" "dosfstools" "mtools" "btrfs-progs" "lvm2" "smartmontools" 
+    "snapper" "zram-generator"
 
-    # Additional utilities
-    "swww"
-    "brightnessctl"
-    "networkmanager"
-    "networkmanager-dmenu"
-    "network-manager-applet"
-    "blueman"
-    "bluez"
-    "bluez-utils"
-    "iwd"
-    "wireless_tools"
-    "xdg-utils"
+    # Theming/Fonts
+    "adwaita-icon-theme" "adwaita-cursors" "adwaita-fonts" "otf-font-awesome" 
+    "ttf-0xproto-nerd" "ttf-jetbrains-mono-nerd" "ttf-meslo-nerd" 
+    "ttf-dejavu" "ttf-liberation" "noto-fonts" 
+    "lxappearance" "papirus-icon-theme" "breeze-gtk-theme" "materia-gtk-theme" 
+    "qt5ct" "kvantum"
 
-    # Theming
-    "adwaita-icon-theme"
-    "adwaita-cursors"
-    "adwaita-fonts"
-    "otf-font-awesome"
-    "ttf-0xproto-nerd"
-    "ttf-jetbrains-mono-nerd"
-    "ttf-meslo-nerd"
+    # Dev Tools
+    "rustup" "rust-analyzer" "go" "python" "nodejs" "npm" "github-cli"
 
-    # Development tools
-    "rustup"
-    "rust-analyzer"
-    "go"
-    "python"
-    "nodejs"
-    "npm"
-    "github-cli"
+    # Graphics/Drivers
+    "mesa" "vulkan-radeon" "vulkan-intel" "vulkan-nouveau" 
+    "libva-mesa-driver" "libva-intel-driver" "intel-media-driver" 
+    "intel-media-sdk" "xf86-video-amdgpu" "xf86-video-ati" 
+    "xf86-video-nouveau" "v4l2loopback-dkms"
 
-    # Multimedia
-    "mpv"
-    "ffmpeg"
-    "imv"
-    "harmonoid-bin"
+    # Gaming
+    "gamemode" "gamescope" "steam" "wine" "protonup-qt"
 
-    # Font and graphics
-    "ttf-dejavu"
-    "ttf-liberation"
-    "noto-fonts"
-    "mesa"
-    "vulkan-radeon"
-    "vulkan-intel"
-    "vulkan-nouveau"
-    "libva-mesa-driver"
-    "libva-intel-driver"
-    "intel-media-driver"
-    "intel-media-sdk"
-    "xf86-video-amdgpu"
-    "xf86-video-ati"
-    "xf86-video-nouveau"
-    "v4l2loopback-dkms"
+    # Comms
+    "discord" "telegram-desktop" "ayugram-desktop" "vesktop"
 
-    # System utilities
-    "htop"
-    "neofetch"
-    "bleachbit"
-    "timeshift"
-    "reflector"
-    "grub"
-    "efibootmgr"
-    "os-prober"
-    "dosfstools"
-    "mtools"
-    "amd-ucode"
-    "intel-ucode"
-    "btrfs-progs"
-    "lvm2"
-    "smartmontools"
-    "snapper"
-    "limine"
-    "limine-snapper-sync"
-    "zram-generator"
+    # Archive tools
+    "zip" "unzip" "p7zip" "tar" "file-roller" "peazip"
 
-    # Display and Xorg
-    "ly"
-    "xorg-server"
-    "xorg-xinit"
-    "xorg-xwayland"
+    # Editors
+    "nvim" "nano" "gedit" "vim"
 
-    # Compression and archives
-    "zip"
-    "unzip"
-    "p7zip"
-    "tar"
-
-    # Security and privacy
-    "firejail"
-    "keepassxc"
-
-    # Office and productivity
-    "libreoffice-still"
-    "aspell"
-    "aspell-en"
-
-    # Printing
-    "cups"
-    "cups-pdf"
-    "ghostscript"
-    "gsfonts"
-    "hplip"
-    "sane"
-    "simple-scan"
-
-    # Bluetooth
-    "bluez-hid2hci"
-
-    # Additional audio tools
-    "pavucontrol"
-    "pasystray"
-
-    # Archiving tools
-    "file-roller"
-    "peazip"
-
-    # Text editors
-    "nvim"
-    "nano"
-    "gedit"
-    "vim"
-
-    # Communication
-    "discord"
-    "telegram-desktop"
-    "ayugram-desktop"
-    "vesktop"
-
-    # Game tools (since some gamemode packages were detected)
-    "gamemode"
-    "gamescope"
-    "steam"
-    "wine"
-    "protonup-qt"
-
-    # Backup and sync tools
-    "rsync"
-    "rclone"
-    "chezmoi"
-
-    # Customization
-    "lxappearance"
-    "papirus-icon-theme"
-    "breeze-gtk-theme"
-    "materia-gtk-theme"
-    "qt5ct"
-    "kvantum"
-
-    # Media creation
-    "gimp"
-    "obs-studio-browser"
-    "krita"
-
-    # Security tools
-    "gufw"
-
-    # Other
-    "octopi"
-    "hyprlock"
-    "wmenu"
+    # Others
+    "octopi" "hyprlock" "wmenu" "obs-studio-browser" "gimp" "krita" "libreoffice-still"
 )
 
-# UPDATED: Function to install packages
-install_packages() {
-    print_status "Installing packages..."
+install_user_packages() {
+    print_status "Installing user packages list..."
     
-    # 1. Check for AUR helper, install if missing
-    if ! command -v yay >/dev/null 2>&1 && ! command -v paru >/dev/null 2>&1; then
-        install_yay
-    fi
-
-    # 2. Set Package Manager (Prioritize yay/paru)
-    if command -v yay >/dev/null 2>&1; then
-        PACKAGE_MANAGER="yay"
-        print_status "Using yay as package manager"
-    elif command -v paru >/dev/null 2>&1; then
-        PACKAGE_MANAGER="paru"
-        print_status "Using paru as package manager"
-    else
-        # Should not happen if install_yay works, but fallback just in case
-        PACKAGE_MANAGER="sudo pacman"
-        print_warning "Falling back to pacman (AUR packages will fail!)"
-    fi
+    # Set Package Manager (We know yay is installed now)
+    PACKAGE_MANAGER="yay"
     
-    # Convert array to string
-    PKG_LIST=$(printf '%s ' "${PACKAGES[@]}")
+    # Flatten array to string
+    PKG_LIST="${PACKAGES[*]}"
     
-    # Install packages
-    # shellcheck disable=SC2086
+    # Install
     $PACKAGE_MANAGER -S --needed --noconfirm $PKG_LIST
     
-    print_success "Packages installed successfully"
+    print_success "All packages installed successfully!"
 }
 
-# Main script execution
+# --- Main Execution ---
+
 main() {
-    print_status "Starting Arch Linux setup with CachyOS repository..."
-    
-    # Check if CachyOS repository is added
+    print_status "Starting Optimized Arch Setup..."
+
+    # 1. Handle CachyOS Repo
     if ! check_cachyos_repo; then
-        if ask_confirmation "Do you want to add the CachyOS repository?"; then
+        if ask_confirmation "Add CachyOS repository?"; then
             add_cachyos_repo
-        else
-            print_warning "Skipping CachyOS repository addition"
+            sudo pacman -Sy # Refresh immediately
         fi
-    fi
-    
-    # Update package databases
-    update_package_db
-    
-    # Install packages
-    if ask_confirmation "Do you want to proceed with installing the predefined packages?"; then
-        install_packages
     else
-        print_warning "Skipping package installation"
+        print_success "CachyOS repo already present."
     fi
-    
-    print_success "Setup completed!"
-    echo -e "\n${GREEN}Note:${NC} You may need to log out and log back in to use your new Sway configuration."
+
+    # 2. Reinstall Native Packages (Optimize)
+    if ask_confirmation "Reinstall ALL native packages (Apply CachyOS optimizations)?"; then
+        reinstall_optimized_packages
+    fi
+
+    # 3. Install Helpers from Repo
+    install_aur_helpers_from_repo
+
+    # 4. Install User Packages
+    if ask_confirmation "Proceed with installing your package list?"; then
+        # Handle the sway vs swayfx conflict before starting
+        handle_sway_conflict
+        install_user_packages
+    fi
+
+    print_success "Setup Completed."
+    echo -e "\n${GREEN}Note:${NC} Reboot is recommended to ensure all optimized binaries and drivers are loaded."
 }
 
-# Run the main function
 main "$@"
-
-# End of script
