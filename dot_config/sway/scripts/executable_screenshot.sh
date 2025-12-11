@@ -3,9 +3,14 @@
 
 case "$1" in
     "area")
-        FILENAME="$HOME/Pictures/Screenshots/screenshot_area_$(date +%Y%m%d_%H%M%S).png"
-        grim -g "$(slurp)" - | tee "$FILENAME" | wl-copy
-        notify-send "Screenshot" "Area screenshot saved to $FILENAME and copied to clipboard"
+        GEOMETRY="$(slurp)"
+        if [ -n "$GEOMETRY" ]; then # Check if geometry is not empty (slurp was not cancelled)
+            FILENAME="$HOME/Pictures/Screenshots/screenshot_area_$(date +%Y%m%d_%H%M%S).png"
+            grim -g "$GEOMETRY" - | tee "$FILENAME" | wl-copy
+            notify-send "Screenshot" "Area screenshot saved to $FILENAME and copied to clipboard"
+        else
+            notify-send "Screenshot" "Area screenshot cancelled" # Notify user of cancellation
+        fi
         ;;
     "window")
         FILENAME="$HOME/Pictures/Screenshots/screenshot_window_$(date +%Y%m%d_%H%M%S).png"
