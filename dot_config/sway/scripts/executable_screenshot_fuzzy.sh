@@ -9,23 +9,26 @@ show_screenshot_menu() {
     
     case "$choice" in
         "Area Screenshot")
-            grim -g "$(slurp)" - | wl-copy
-            notify-send "Screenshot" "Area screenshot copied to clipboard"
+            FILENAME="$HOME/Pictures/Screenshots/screenshot_area_$(date +%Y%m%d_%H%M%S).png"
+            grim -g "$(slurp)" - | tee "$FILENAME" | wl-copy
+            notify-send "Screenshot" "Area screenshot saved to $FILENAME and copied to clipboard"
             ;;
         "Window Screenshot")
-            winid=$(swaymsg -t get_tree | jq -r '..|select(.type?)|select(.focused==true).id')
-            grim -g "$(swaymsg -t get_tree | jq -r "..|select(.type?)|select(.focused==true).rect | \"\(.x),\(.y) \(.width)x\(.height)\"")" - | wl-copy
-            notify-send "Screenshot" "Window screenshot copied to clipboard"
+            FILENAME="$HOME/Pictures/Screenshots/screenshot_window_$(date +%Y%m%d_%H%M%S).png"
+            grim -g "$(swaymsg -t get_tree | jq -r '..|select(.type?)|select(.focused==true).rect | "\(.x),\(.y) \(.width)x\(.height)"')" - | tee "$FILENAME" | wl-copy
+            notify-send "Screenshot" "Window screenshot saved to $FILENAME and copied to clipboard"
             ;;
         "Full Screen Screenshot")
             mkdir -p "$HOME/Pictures/Screenshots"
-            grim -t png "$HOME/Pictures/Screenshots/screenshot_$(date +%Y%m%d_%H%M%S).png" && grim - | wl-copy
-            notify-send "Screenshot" "Full screen screenshot saved and copied to clipboard"
+            FILENAME="$HOME/Pictures/Screenshots/screenshot_$(date +%Y%m%d_%H%M%S).png"
+            grim -t png - | tee "$FILENAME" | wl-copy
+            notify-send "Screenshot" "Full screen screenshot saved to $FILENAME and copied to clipboard"
             ;;
         "Screen with cursor")
             mkdir -p "$HOME/Pictures/Screenshots"
-            grim -c -t png "$HOME/Pictures/Screenshots/screenshot_$(date +%Y%m%d_%H%M%S).png" && grim -c - | wl-copy
-            notify-send "Screenshot" "Full screen screenshot with cursor saved and copied to clipboard"
+            FILENAME="$HOME/Pictures/Screenshots/screenshot_cursor_$(date +%Y%m%d_%H%M%S).png"
+            grim -c -t png - | tee "$FILENAME" | wl-copy
+            notify-send "Screenshot" "Full screen screenshot with cursor saved to $FILENAME and copied to clipboard"
             ;;
         *)
             # User cancelled
@@ -37,29 +40,27 @@ show_screenshot_menu() {
 # If an argument is provided, use it directly (for keybindings)
 if [ -n "$1" ]; then
     case "$1" in
-        "area"|"window"|"screen"|"cursor")
-            # Use original behavior for keybindings
-            case "$1" in
-                "area")
-                    grim -g "$(slurp)" - | wl-copy
-                    notify-send "Screenshot" "Area screenshot copied to clipboard"
-                    ;;
-                "window")
-                    winid=$(swaymsg -t get_tree | jq -r '..|select(.type?)|select(.focused==true).id')
-                    grim -g "$(swaymsg -t get_tree | jq -r "..|select(.type?)|select(.focused==true).rect | \"\(.x),\(.y) \(.width)x\(.height)\"")" - | wl-copy
-                    notify-send "Screenshot" "Window screenshot copied to clipboard"
-                    ;;
-                "screen")
-                    mkdir -p "$HOME/Pictures/Screenshots"
-                    grim -t png "$HOME/Pictures/Screenshots/screenshot_$(date +%Y%m%d_%H%M%S).png" && grim - | wl-copy
-                    notify-send "Screenshot" "Full screen screenshot saved and copied to clipboard"
-                    ;;
-                "cursor")
-                    mkdir -p "$HOME/Pictures/Screenshots"
-                    grim -c -t png "$HOME/Pictures/Screenshots/screenshot_$(date +%Y%m%d_%H%M%S).png" && grim -c - | wl-copy
-                    notify-send "Screenshot" "Full screen screenshot with cursor saved and copied to clipboard"
-                    ;;
-            esac
+        "area")
+            FILENAME="$HOME/Pictures/Screenshots/screenshot_area_$(date +%Y%m%d_%H%M%S).png"
+            grim -g "$(slurp)" - | tee "$FILENAME" | wl-copy
+            notify-send "Screenshot" "Area screenshot saved to $FILENAME and copied to clipboard"
+            ;;
+        "window")
+            FILENAME="$HOME/Pictures/Screenshots/screenshot_window_$(date +%Y%m%d_%H%M%S).png"
+            grim -g "$(swaymsg -t get_tree | jq -r '..|select(.type?)|select(.focused==true).rect | "\(.x),\(.y) \(.width)x\(.height)"')" - | tee "$FILENAME" | wl-copy
+            notify-send "Screenshot" "Window screenshot saved to $FILENAME and copied to clipboard"
+            ;;
+        "screen")
+            mkdir -p "$HOME/Pictures/Screenshots"
+            FILENAME="$HOME/Pictures/Screenshots/screenshot_$(date +%Y%m%d_%H%M%S).png"
+            grim -t png - | tee "$FILENAME" | wl-copy
+            notify-send "Screenshot" "Full screen screenshot saved to $FILENAME and copied to clipboard"
+            ;;
+        "cursor")
+            mkdir -p "$HOME/Pictures/Screenshots"
+            FILENAME="$HOME/Pictures/Screenshots/screenshot_cursor_$(date +%Y%m%d_%H%M%S).png"
+            grim -c -t png - | tee "$FILENAME" | wl-copy
+            notify-send "Screenshot" "Full screen screenshot with cursor saved to $FILENAME and copied to clipboard"
             ;;
         *)
             show_screenshot_menu
