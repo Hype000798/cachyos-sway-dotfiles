@@ -4,5 +4,5 @@ case $choice in
     lock) hyprlock ;;
     logout) swaymsg exit ;;
     reboot) systemctl reboot ;;
-    shutdown) systemctl shutdown ;;
+    shutdown) systemctl poweroff ;;
 esac
