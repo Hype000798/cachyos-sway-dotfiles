@@ -51,6 +51,27 @@ ask_confirmation() {
     fi
 }
 
+# NEW FUNCTION: Bootstrap yay from AUR
+install_yay() {
+    print_status "yay not found. Installing yay from AUR..."
+    
+    # Ensure git and base-devel are present
+    sudo pacman -S --needed --noconfirm git base-devel
+    
+    # Clone and build
+    cd /opt
+    sudo git clone https://aur.archlinux.org/yay-bin.git
+    sudo chown -R "$USER:$USER" ./yay-bin
+    cd yay-bin
+    makepkg -si --noconfirm
+    
+    cd ../
+    # Optional: cleanup
+    # sudo rm -rf yay-bin
+    
+    print_success "yay installed successfully"
+}
+
 # Check if running as root
 if [[ $EUID -eq 0 ]]; then
    print_error "This script should not be run as root"
@@ -332,11 +353,16 @@ PACKAGES=(
     "wmenu"
 )
 
-# Function to install packages
+# UPDATED: Function to install packages
 install_packages() {
     print_status "Installing packages..."
     
-    # Determine if we should use pacman or an AUR helper
+    # 1. Check for AUR helper, install if missing
+    if ! command -v yay >/dev/null 2>&1 && ! command -v paru >/dev/null 2>&1; then
+        install_yay
+    fi
+
+    # 2. Set Package Manager (Prioritize yay/paru)
     if command -v yay >/dev/null 2>&1; then
         PACKAGE_MANAGER="yay"
         print_status "Using yay as package manager"
@@ -344,8 +370,9 @@ install_packages() {
         PACKAGE_MANAGER="paru"
         print_status "Using paru as package manager"
     else
+        # Should not happen if install_yay works, but fallback just in case
         PACKAGE_MANAGER="sudo pacman"
-        print_status "Using pacman as package manager (some packages might need manual AUR installation)"
+        print_warning "Falling back to pacman (AUR packages will fail!)"
     fi
     
     # Convert array to string
