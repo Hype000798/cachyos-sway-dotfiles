@@ -13,10 +13,8 @@ A collection of meticulously crafted dotfiles for a beautiful and functional Swa
 - [Installation](#installation)
 - [Quick Start / Usage](#quick-start--usage)
 - [Configuration Details](#configuration-details)
-- [Development](#development)
+- [Development Workflow](#development-workflow)
 - [Roadmap](#roadmap)
-- [Contributing](#contributing)
-- [Testing](#testing)
 - [License](#license)
 - [Authors & Acknowledgments](#authors--acknowledgments)
 - [Support & Contact](#support--contact)
@@ -35,15 +33,20 @@ These dotfiles are specifically tailored for CachyOS, ensuring compatibility and
 *   **Lock Screen:** Secure and stylish screen locking with `Hyprlock`.
 *   **Terminal Emulator:** Feature-rich `Wezterm` configuration.
 *   **File Manager:** Modern and efficient `Yazi` terminal file manager.
-*   **Automated Setup Script:** An `arch-setup-script.sh` is included to streamline installation of essential packages and CachyOS repositories.
-*   **Themed Applications:** Cohesive theming across various applications for a unified look and feel (e.g., Catppuccin Mocha).
+*   **Robust Automated Setup Script (`arch-setup-script.sh`):** This script streamlines installation by:
+    *   Adding CachyOS repositories.
+    *   Reinstalling native packages to apply CachyOS optimizations.
+    *   Installing `yay` and `paru` (AUR helpers) directly from CachyOS repositories.
+    *   Intelligently handling the `sway` vs. `swayfx` conflict to ensure `swayfx` is installed.
+    *   Installing all user-defined packages from the comprehensive list.
+*   **Themed Applications:** Cohesive theming across various applications for a unified look and feel (e.g., Catppuccin Mocha, Orchis GTK Theme).
 *   **Background Management:** Dynamic background changes with `swww`.
 *   **Clipboard Management:** History and pasting with `wl-clipboard` and `cliphist`.
-*   **Custom Scripts:** Various utility scripts for power menu, screenshots, volume/brightness OSD, and more.
+*   **Custom Scripts:** Various utility scripts for power menu, screenshots (with save-to-file and clipboard functionality, and proper cancellation handling), volume/brightness OSD, and more.
 
 ## Installation
 
-These dotfiles are managed using `chezmoi` and are hosted in a private GitHub repository. Secure setup involves using SSH keys.
+These dotfiles are managed using `chezmoi` and are designed to be used with a private GitHub repository for secure storage. Secure setup involves using SSH keys.
 
 ### Prerequisites
 
@@ -55,7 +58,7 @@ Before installing these dotfiles, ensure you have the following installed on you
 
 ### Recommended Installation (Using SSH)
 
-This method automates the setup process, including package installation via the provided script.
+This method automates the setup process, including comprehensive package installation via the provided script.
 
 1.  **Initialize `chezmoi`:** Use the SSH URL of your private repository. This command will clone the repository to `~/.local/share/chezmoi` and apply the dotfiles to your system.
     ```bash
@@ -66,11 +69,11 @@ This method automates the setup process, including package installation via the 
     ```bash
     ~/.local/share/chezmoi/executable_arch-setup-script.sh
     ```
-    This script will guide you through adding CachyOS repos, updating package databases, and installing all recommended packages for this dotfile setup.
+    This script will guide you through adding CachyOS repos, updating package databases, and installing all recommended packages for this dotfile setup, including correctly handling `sway` vs `swayfx` installation.
 
 ### Manual Installation (Advanced)
 
-If you prefer a more granular setup:
+If you prefer a more granular setup or need to inspect each step:
 
 1.  **Clone the Repository:**
     ```bash
@@ -78,10 +81,14 @@ If you prefer a more granular setup:
     ```
     (Ensure your SSH agent is running and your key is loaded.)
 2.  **Install Prerequisites:** Manually install all necessary software (Sway, Waybar, Fuzzel, Hyprlock, Wezterm, etc.) using your package manager. You can refer to `~/.local/share/chezmoi/executable_arch-setup-script.sh` for a comprehensive list of recommended packages.
-3.  **Apply Dotfiles:**
+3.  **Apply Dotfiles:
     ```bash
     chezmoi apply
     ```
+
+### Verification Steps
+
+After installation, log out and log back into your Sway session. You should see the new configuration applied. Check Waybar, Fuzzel, Hyprlock, and your terminal (Wezterm) to ensure they reflect the new themes and settings.
 
 ## Quick Start / Usage
 
@@ -97,7 +104,8 @@ Once installed, your Sway environment will be transformed. Here are some common 
 *   **Move Window to Workspace:** `Mod + Shift + [1-9]`
 *   **Screenshots:**
     *   `Print Screen`: Full screen screenshot (saved and copied to clipboard).
-    *   `Mod+Shift+s`: Area screenshot (copied to clipboard).
+    *   `Mod+PrtSc`: Full screen screenshot (saved and copied to clipboard).
+    *   `Mod+Ctrl+PrtSc`: Area screenshot (saved and copied to clipboard).
     *   `Mod+Ctrl+s`: Fuzzel menu for various screenshot options.
 *   **Power Menu:** `Mod+Shift+d` (Launches Fuzzel power menu for lock/logout/reboot/shutdown).
 *   **Clipboard History:** `Mod+Shift+v`
@@ -118,7 +126,7 @@ The core configurations are located in your `chezmoi` source directory (typicall
 
 Feel free to modify these files directly in your `chezmoi` source (`~/.local/share/chezmoi/dot_config/`) and then run `chezmoi apply` to deploy changes. Remember to reload Sway (`Mod + Shift + c`) after making changes to the Sway configuration.
 
-## Development
+## Development Workflow
 
 These dotfiles are managed using Git via `chezmoi`. To contribute or make personal changes:
 
@@ -134,18 +142,6 @@ These dotfiles are managed using Git via `chezmoi`. To contribute or make person
 *   Integrate additional useful utilities and their configurations.
 *   Automate post-install configurations where possible.
 *   Expand theming options.
-
-## Contributing
-
-Contributions are welcome! If you find any issues or have suggestions, please open an issue or pull request on the GitHub repository.
-
-## Testing
-
-While dotfiles don't have traditional unit tests, you can "test" changes by:
-
-1.  **Reloading Sway:** After modifying `~/.config/sway/config`, press `Mod + Shift + c` to apply changes.
-2.  **Restarting Waybar:** If you change Waybar config, kill the existing Waybar process and launch it again from a terminal.
-3.  **Checking application behavior:** Verify that Fuzzel, Hyprlock, Wezterm, and other applications behave as expected after configuration changes.
 
 ## License
 
