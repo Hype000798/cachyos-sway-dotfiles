@@ -12,9 +12,6 @@
 
 
 
-gaps inner 4
-gaps outer 4
-
 # Initialize wallpaper with swww
 exec_always ~/.config/sway/scripts/swww_init_simple.sh
 
@@ -45,14 +42,13 @@ exec_always ~/.config/sway/scripts/start_audio_services.sh
 
 
 
+
+
 # include custom sway config
 include "${XDG_CONFIG_HOME:-$HOME/.config}/sway/config.d/*.conf"
 
 # include default sway config
 include '$(/usr/libexec/sway/layered-include "/usr/share/sway/config.d/*.conf" "/etc/sway/config.d/*.conf")'
-
-# Enable focus follows mouse
-focus_follows_mouse always
 
 exec swaync &
 
