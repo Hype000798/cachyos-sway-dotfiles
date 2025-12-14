@@ -14,8 +14,8 @@
         "cpu",
         "memory",
         "temperature",
-        "custom/uptime",
-        "custom/weather"
+        "custom/weather",
+        "custom/uptime"
     ],
     "modules-center": [
         "sway/workspaces"
