@@ -167,6 +167,11 @@ window#waybar.hidden {
     color: #a6e3a1;
 }
 
+#custom-weather {
+    color: #f9e2af;
+    font-family: "Font Awesome 6 Free";
+}
+
 
 #window {
     color: #f5e0dc;
