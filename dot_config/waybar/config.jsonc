@@ -14,7 +14,8 @@
         "cpu",
         "memory",
         "temperature",
-        "custom/uptime"
+        "custom/uptime",
+        "custom/weather"
     ],
     "modules-center": [
         "sway/workspaces"
@@ -23,12 +24,12 @@
         "sway/window",
         "tray",
         "idle_inhibitor",
-        "mpris",
         "backlight",
         "bluetooth",
         "pulseaudio",
         "network",
-        "battery"
+        "battery",
+        "custom/power"
     ],
     "sway/workspaces": {
         "format": "{name}",
@@ -58,24 +59,35 @@
     },
     "cpu": {
         "format": "{usage}% ",
-        "interval": 1
+        "interval": 1,
+        "tooltip-format": "CPU: {usage}% ({avg_load_1m} {avg_load_5m} {avg_load_15m})"
     },
     "memory": {
-        "format": "{}% "
+        "format": "{}% ",
+        "tooltip-format": "Memory: {used}GB / {total}GB ({percentage}%)"
     },
     "temperature": {
         "format": "{temperatureC}°C ",
         "critical-threshold": 80,
-        "format-critical": "{temperatureC}°C "
+        "format-critical": "{temperatureC}°C ",
+        "tooltip-format": "Temp: {temperatureC}°C"
     },
     "disk": {
         "format": "{percentage_used}% ",
-        "interval": 30
+        "interval": 30,
+        "tooltip-format": "Disk: {used} / {total} ({percentage_used}%)"
     },
     "custom/uptime": {
         "format": "{} ",
-        "exec": "echo $(awk '{print int($1/86400)\"w \"int(($1%86400)/3600)\"h \"int(($1%3600)/60)\"m\"}' /proc/uptime)",
+        "exec": "~/.config/waybar/scripts/uptime.sh",
         "interval": 60
+    },
+
+    "custom/weather": {
+        "format": "{text}",
+        "tooltip": true,
+        "exec": "~/.config/waybar/scripts/waybar-wttr.py",
+        "interval": 1800
     },
 
     "backlight": {
@@ -128,22 +140,20 @@
         "icon-size": 15,
         "spacing": 5
     },
-    "mpris": {
-        "format": "{player_icon} {title} - {artist}",
-        "format-alt": "{player_icon} {title}",
-        "player-icons": {
-            "default": "🎵",
-            "spotify": "",
-            "vlc": "🎬"
-        },
-        "title-len": 25,
-        "artist-len": 25
-    },
+
     "bluetooth": {
         "format": "{} ",
         "format-device-default": "{alias} {icon}",
         "format-no-paired": "Off",
         "format-off": "Off",
         "on-click": "blueman-manager"
+    },
+
+    "custom/power": {
+        "format": "⏻ ",
+        "tooltip": false,
+        "on-click": "bash -c 'if [[ $(systemctl is-active hyprlock) == \"active\" ]]; then systemctl suspend; else hyprlock; fi'",
+        "on-scroll-up": "systemctl reboot",
+        "on-scroll-down": "systemctl poweroff"
     }
 }

@@ -159,14 +159,9 @@ window#waybar.hidden {
     color: #f5c2e7;
 }
 
-#custom-launcher {
-    color: #74c7ec;
-    font-size: 16px;
-}
 
-#custom-weather {
-    color: #f9e2af;
-}
+
+
 
 #custom-uptime {
     color: #a6e3a1;
@@ -204,10 +199,7 @@ label:focus {
     opacity: 0.6;
 }
 
-#mode {
-    color: #f38ba8;
-    background-color: #11111b;
-}
+
 
 #privacy {
     padding: 0;
