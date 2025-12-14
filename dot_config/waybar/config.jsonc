@@ -28,8 +28,7 @@
         "bluetooth",
         "pulseaudio",
         "network",
-        "battery",
-        "custom/power"
+        "battery"
     ],
     "sway/workspaces": {
         "format": "{name}",
@@ -148,13 +147,5 @@
         "format-no-paired": "Off",
         "format-off": "Off",
         "on-click": "blueman-manager"
-    },
-
-    "custom/power": {
-        "format": "⏻ ",
-        "tooltip": false,
-        "on-click": "bash -c 'if [[ $(systemctl is-active hyprlock) == \"active\" ]]; then systemctl suspend; else hyprlock; fi'",
-        "on-scroll-up": "systemctl reboot",
-        "on-scroll-down": "systemctl poweroff"
     }
 }
