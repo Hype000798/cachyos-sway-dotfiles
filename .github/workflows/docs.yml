@@ -24,4 +24,6 @@ jobs:
           pip install mkdocs-material
       - name: Build and Deploy
         run: |
+          git config --global user.email "action@github.com"
+          git config --global user.name "GitHub Action"
           mkdocs gh-deploy --force
