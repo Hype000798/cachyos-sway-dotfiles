@@ -1,11 +1,31 @@
 site_name: CachyOS Sway Dotfiles
 site_url: https://Hype000798.github.io/cachyos-sway-dotfiles/
+repo_url: https://github.com/Hype000798/cachyos-sway-dotfiles
+repo_name: Hype000798/cachyos-sway-dotfiles
+edit_uri: edit/main/docs/
+
 theme:
   name: material
+  logo: assets/logo.svg
+  favicon: assets/favicon.png
   palette:
-    scheme: slate
-    primary: indigo
-    accent: light blue
+    # Palette toggle for light and dark mode
+    - scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - content.action.edit
+    - navigation.top
+    - search.suggest
+    - search.highlight
+
 nav:
   - Home: index.md
   - Keybindings: keybindings.md
@@ -13,14 +33,20 @@ nav:
   - Scripts: scripts.md
   - Troubleshooting: troubleshooting.md
   - Packages: packages.md
+  - Blog: blog/index.md
+
 plugins:
   - search
+  - blog
+  - tags
+
 markdown_extensions:
   - admonition
   - codehilite
   - toc:
       permalink: true
   - tables
+
 extra:
   social:
     - icon: fontawesome/brands/github
