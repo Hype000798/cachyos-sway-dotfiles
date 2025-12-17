@@ -1,0 +1,27 @@
+site_name: CachyOS Sway Dotfiles
+site_url: https://ankitjd7795.github.io/cachyos-sway-dotfiles/
+theme:
+  name: material
+  palette:
+    scheme: slate
+    primary: indigo
+    accent: light blue
+nav:
+  - Home: index.md
+  - Keybindings: keybindings.md
+  - Customization: customization.md
+  - Scripts: scripts.md
+  - Troubleshooting: troubleshooting.md
+  - Packages: packages.md
+plugins:
+  - search
+markdown_extensions:
+  - admonition
+  - codehilite
+  - toc:
+      permalink: true
+  - tables
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/ankitjd7795/cachyos-sway-dotfiles

@@ -1,11 +1,14 @@
 # CachyOS Sway Dotfiles
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![Docs](https://img.shields.io/badge/docs-website-blue)](https://ankitjd7795.github.io/cachyos-sway-dotfiles/)
 [![Stars](https://img.shields.io/github/stars/ankitjd7795/cachyos-sway-dotfiles?style=social)](https://github.com/ankitjd7795/cachyos-sway-dotfiles)
 [![Forks](https://img.shields.io/github/forks/ankitjd7795/cachyos-sway-dotfiles?style=social)](https://github.com/ankitjd7795/cachyos-sway-dotfiles/fork)
 [![Issues](https://img.shields.io/github/issues/ankitjd7795/cachyos-sway-dotfiles)](https://github.com/ankitjd7795/cachyos-sway-dotfiles/issues)
 
 A collection of meticulously crafted dotfiles for a beautiful and functional Sway Wayland compositor setup on CachyOS, managed with `chezmoi`.
+
+Documentation site: https://ankitjd7795.github.io/cachyos-sway-dotfiles/
 
 > ⭐ If you find this project useful, consider giving it a star!
 
