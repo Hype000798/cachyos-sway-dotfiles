@@ -1,14 +1,16 @@
 # CachyOS Sway Dotfiles
 
+![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Docs](https://img.shields.io/badge/docs-website-blue)](https://ankitjd7795.github.io/cachyos-sway-dotfiles/)
+[![Docs](https://img.shields.io/badge/docs-website-blue)](https://Hype000798.github.io/cachyos-sway-dotfiles/)
 [![Stars](https://img.shields.io/github/stars/Hype000798/cachyos-sway-dotfiles?style=social)](https://github.com/Hype000798/cachyos-sway-dotfiles)
 [![Forks](https://img.shields.io/github/forks/Hype000798/cachyos-sway-dotfiles?style=social)](https://github.com/Hype000798/cachyos-sway-dotfiles/fork)
 [![Issues](https://img.shields.io/github/issues/Hype000798/cachyos-sway-dotfiles)](https://github.com/Hype000798/cachyos-sway-dotfiles/issues)
+![Version](https://img.img.shields.io/badge/version-1.0.0-blue)
 
 A collection of meticulously crafted dotfiles for a beautiful and functional Sway Wayland compositor setup on CachyOS, managed with `chezmoi`.
 
-Documentation site: https://ankitjd7795.github.io/cachyos-sway-dotfiles/
+Documentation site: https://Hype000798.github.io/cachyos-sway-dotfiles/
 
 > ⭐ If you find this project useful, consider giving it a star!
 
@@ -79,7 +81,7 @@ These dotfiles are specifically tailored for CachyOS, ensuring compatibility and
 
 ## Installation
 
-These dotfiles are managed using `chezmoi` and can be easily installed on any CachyOS or Arch-based system.
+These dotfiles are managed using `chezmoi`. Secure setup involves using SSH keys for private repositories, or HTTPS for public ones.
 
 ### Prerequisites
 
@@ -87,15 +89,22 @@ Before installing these dotfiles, ensure you have the following installed on you
 
 *   **`chezmoi`**: Install via your package manager (e.g., `sudo pacman -S chezmoi`).
 *   **Git**: For cloning the repository.
+*   **SSH Keys (for private repositories):** If you haven't already, generate an SSH key pair and add your public key to your GitHub account. For instructions, refer to GitHub's official documentation on [generating SSH keys](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) and [adding it to your GitHub account](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account).
 
 ### Recommended Installation (Automated with Setup Script)
 
 This method automates the setup process, including comprehensive package installation via the provided script.
 
-1.  **Initialize `chezmoi`:** This command will clone the repository to `~/.local/share/chezmoi` and apply the dotfiles to your system.
-    ```bash
-    chezmoi init --apply https://github.com/Hype000798/cachyos-sway-dotfiles.git
-    ```
+1.  **Initialize `chezmoi`:** Use the URL of your repository. This command will clone the repository to `~/.local/share/chezmoi` and apply the dotfiles to your system.
+    *   **Using SSH (Recommended for private repositories):**
+        ```bash
+        chezmoi init --apply git@github.com:Hype000798/cachyos-sway-dotfiles.git
+        ```
+        (Ensure your SSH agent is running and your key is loaded.)
+    *   **Using HTTPS (Suitable for public repositories or if SSH is not set up):**
+        ```bash
+        chezmoi init --apply https://github.com/Hype000798/cachyos-sway-dotfiles.git
+        ```
 2.  **Run the Setup Script:** The `executable_arch-setup-script.sh` is now available locally in your `chezmoi` source directory (e.g., `~/.local/share/chezmoi/executable_arch-setup-script.sh`). Execute it to install system packages and configure CachyOS repositories:
     ```bash
     ~/.local/share/chezmoi/executable_arch-setup-script.sh
@@ -107,10 +116,14 @@ This method automates the setup process, including comprehensive package install
 If you prefer a more granular setup or need to inspect each step:
 
 1.  **Clone the Repository:**
-    ```bash
-    git clone https://github.com/Hype000798/cachyos-sway-dotfiles.git ~/.local/share/chezmoi
-    cd ~/.local/share/chezmoi
-    ```
+    *   **Using SSH:**
+        ```bash
+        git clone git@github.com:Hype000798/cachyos-sway-dotfiles.git ~/.local/share/chezmoi
+        ```
+    *   **Using HTTPS:**
+        ```bash
+        git clone https://github.com/Hype000798/cachyos-sway-dotfiles.git ~/.local/share/chezmoi
+        ```
 2.  **Install Prerequisites:** Manually install all necessary software (Sway, Waybar, Fuzzel, Hyprlock, Wezterm, etc.) using your package manager. You can refer to `~/.local/share/chezmoi/executable_arch-setup-script.sh` for a comprehensive list of recommended packages.
 3.  **Apply Dotfiles:**
     ```bash
@@ -428,16 +441,16 @@ All custom scripts are located in `~/.config/sway/scripts/`.
 
 ### System Management Scripts
 
-**lockman.sh** - Screen locking wrapper for Hyprlock  
-**powermenu.sh** - Power menu (lock/logout/reboot/shutdown)  
-**swayidle_with_lid.sh** - Idle management and lid handling  
+**lockman.sh** - Screen locking wrapper for Hyprlock
+**powermenu.sh** - Power menu (lock/logout/reboot/shutdown)
+**swayidle_with_lid.sh** - Idle management and lid handling
 **clamshell.sh** - Clamshell mode for external monitors
 
 ### Visual Effects Scripts
 
-**swww_init_simple.sh** - Initialize wallpaper daemon  
-**background-swap.sh** - Change wallpapers  
-**swayfx_enhancements.sh** - Apply SwayFX visual effects  
+**swww_init_simple.sh** - Initialize wallpaper daemon
+**background-swap.sh** - Change wallpapers
+**swayfx_enhancements.sh** - Apply SwayFX visual effects
 **auto-rotate.sh** - Automatic screen rotation (tablets)
 
 ### Screenshot Scripts
@@ -450,19 +463,19 @@ All custom scripts are located in `~/.config/sway/scripts/`.
 ~/.config/sway/scripts/screenshot.sh window # Current window
 ```
 
-**screenshot_fuzzy.sh** - Interactive screenshot menu  
+**screenshot_fuzzy.sh** - Interactive screenshot menu
 **screenrecord.sh** - Screen recording utility
 
 ### Audio & Brightness Scripts
 
-**volume_osd.sh** - Volume control with OSD  
-**brightness_osd.sh** - Brightness control with OSD  
+**volume_osd.sh** - Volume control with OSD
+**brightness_osd.sh** - Brightness control with OSD
 **start_audio_services.sh** - Initialize PipeWire/WirePlumber
 
 ### Utility Scripts
 
-**clipboard_history.sh** - Clipboard history manager  
-**setup-mime-types.sh** - Configure default applications  
+**clipboard_history.sh** - Clipboard history manager
+**setup-mime-types.sh** - Configure default applications
 **lid_watcher.sh** - Monitor laptop lid events
 
 ### Creating Custom Scripts
@@ -525,7 +538,10 @@ bindsym $mod+key exec ~/.config/sway/scripts/my-script.sh
 - rustup, rust-analyzer, go, python, nodejs, npm, github-cli
 
 **Graphics & Drivers** (12 packages, ~110 MB):
-- mesa, vulkan-radeon, vulkan-intel, libva-mesa-driver, intel-media-driver
+- mesa, vulkan-radeon, vulkan-intel, vulkan-nouveau
+- libva-mesa-driver, libva-intel-driver, intel-media-driver
+- intel-media-sdk, xf86-video-amdgpu, xf86-video-ati
+- xf86-video-nouveau, v4l2loopback-dkms
 
 **Gaming** (5 packages, ~500 MB):
 - gamemode, gamescope, steam, wine, protonup-qt
@@ -598,9 +614,7 @@ systemctl --user status pipewire pipewire-pulse wireplumber
 
 # Start services
 systemctl --user start pipewire pipewire-pulse wireplumber
-
-# Run audio setup script
-~/.config/sway/scripts/start_audio_services.sh
+systemctl --user enable pipewire pipewire-pulse wireplumber
 ```
 
 **Volume/Brightness Keys Not Working**:
