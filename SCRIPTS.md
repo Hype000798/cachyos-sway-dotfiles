@@ -688,4 +688,4 @@ journalctl --user -u sway --since today
 
 ---
 
-For script-related issues or feature requests, please [open an issue](https://github.com/ankitjd7795/cachyos-sway-dotfiles/issues).
+For script-related issues or feature requests, please [open an issue](https://github.com/Hype000798/cachyos-sway-dotfiles/issues).

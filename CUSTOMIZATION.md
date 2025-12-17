@@ -1024,4 +1024,4 @@ chezmoi apply
 - [Nerd Fonts](https://www.nerdfonts.com/)
 - [chezmoi Documentation](https://www.chezmoi.io/)
 
-For customization help, check [TROUBLESHOOTING.md](TROUBLESHOOTING.md) or [open an issue](https://github.com/ankitjd7795/cachyos-sway-dotfiles/issues).
+For customization help, check [TROUBLESHOOTING.md](TROUBLESHOOTING.md) or [open an issue](https://github.com/Hype000798/cachyos-sway-dotfiles/issues).

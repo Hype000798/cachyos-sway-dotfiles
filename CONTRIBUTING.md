@@ -42,7 +42,7 @@ Before contributing, ensure you have:
    ```
 3. Add the upstream repository:
    ```bash
-   git remote add upstream git@github.com:ankitjd7795/cachyos-sway-dotfiles.git
+   git remote add upstream git@github.com:Hype000798/cachyos-sway-dotfiles.git
    ```
 
 ## Development Workflow

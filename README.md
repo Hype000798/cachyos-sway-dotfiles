@@ -2,9 +2,9 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Docs](https://img.shields.io/badge/docs-website-blue)](https://ankitjd7795.github.io/cachyos-sway-dotfiles/)
-[![Stars](https://img.shields.io/github/stars/ankitjd7795/cachyos-sway-dotfiles?style=social)](https://github.com/ankitjd7795/cachyos-sway-dotfiles)
-[![Forks](https://img.shields.io/github/forks/ankitjd7795/cachyos-sway-dotfiles?style=social)](https://github.com/ankitjd7795/cachyos-sway-dotfiles/fork)
-[![Issues](https://img.shields.io/github/issues/ankitjd7795/cachyos-sway-dotfiles)](https://github.com/ankitjd7795/cachyos-sway-dotfiles/issues)
+[![Stars](https://img.shields.io/github/stars/Hype000798/cachyos-sway-dotfiles?style=social)](https://github.com/Hype000798/cachyos-sway-dotfiles)
+[![Forks](https://img.shields.io/github/forks/Hype000798/cachyos-sway-dotfiles?style=social)](https://github.com/Hype000798/cachyos-sway-dotfiles/fork)
+[![Issues](https://img.shields.io/github/issues/Hype000798/cachyos-sway-dotfiles)](https://github.com/Hype000798/cachyos-sway-dotfiles/issues)
 
 A collection of meticulously crafted dotfiles for a beautiful and functional Sway Wayland compositor setup on CachyOS, managed with `chezmoi`.
 
@@ -16,7 +16,7 @@ Documentation site: https://ankitjd7795.github.io/cachyos-sway-dotfiles/
 
 ```bash
 # One-line installation
-chezmoi init --apply https://github.com/ankitjd7795/cachyos-sway-dotfiles.git && ~/.local/share/chezmoi/executable_arch-setup-script.sh
+chezmoi init --apply https://github.com/Hype000798/cachyos-sway-dotfiles.git && ~/.local/share/chezmoi/executable_arch-setup-script.sh
 ```
 
 ## Screenshots
@@ -94,7 +94,7 @@ This method automates the setup process, including comprehensive package install
 
 1.  **Initialize `chezmoi`:** This command will clone the repository to `~/.local/share/chezmoi` and apply the dotfiles to your system.
     ```bash
-    chezmoi init --apply https://github.com/ankitjd7795/cachyos-sway-dotfiles.git
+    chezmoi init --apply https://github.com/Hype000798/cachyos-sway-dotfiles.git
     ```
 2.  **Run the Setup Script:** The `executable_arch-setup-script.sh` is now available locally in your `chezmoi` source directory (e.g., `~/.local/share/chezmoi/executable_arch-setup-script.sh`). Execute it to install system packages and configure CachyOS repositories:
     ```bash
@@ -108,7 +108,7 @@ If you prefer a more granular setup or need to inspect each step:
 
 1.  **Clone the Repository:**
     ```bash
-    git clone https://github.com/ankitjd7795/cachyos-sway-dotfiles.git ~/.local/share/chezmoi
+    git clone https://github.com/Hype000798/cachyos-sway-dotfiles.git ~/.local/share/chezmoi
     cd ~/.local/share/chezmoi
     ```
 2.  **Install Prerequisites:** Manually install all necessary software (Sway, Waybar, Fuzzel, Hyprlock, Wezterm, etc.) using your package manager. You can refer to `~/.local/share/chezmoi/executable_arch-setup-script.sh` for a comprehensive list of recommended packages.
@@ -679,7 +679,7 @@ Thank you for considering contributing to this project!
    ```
 3. Add upstream:
    ```bash
-   git remote add upstream https://github.com/ankitjd7795/cachyos-sway-dotfiles.git
+   git remote add upstream https://github.com/Hype000798/cachyos-sway-dotfiles.git
    ```
 
 ### Development Workflow
@@ -792,9 +792,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 If you encounter any issues or have questions:
 
-- 📝 [Open an Issue](https://github.com/ankitjd7795/cachyos-sway-dotfiles/issues) - Report bugs or request features
-- 💬 [Start a Discussion](https://github.com/ankitjd7795/cachyos-sway-dotfiles/discussions) - Ask questions or share ideas
-- ⭐ [Star the Repository](https://github.com/ankitjd7795/cachyos-sway-dotfiles) - Show your support!
+- 📝 [Open an Issue](https://github.com/Hype000798/cachyos-sway-dotfiles/issues) - Report bugs or request features
+- 💬 [Start a Discussion](https://github.com/Hype000798/cachyos-sway-dotfiles/discussions) - Ask questions or share ideas
+- ⭐ [Star the Repository](https://github.com/Hype000798/cachyos-sway-dotfiles) - Show your support!
 
 ## Show Your Setup
 

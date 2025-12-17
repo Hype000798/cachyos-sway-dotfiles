@@ -257,4 +257,4 @@ bindsym $mod+Ctrl+l exec ~/.config/sway/scripts/lockman.sh
 
 ---
 
-For issues or suggestions regarding keybindings, please [open an issue](https://github.com/ankitjd7795/cachyos-sway-dotfiles/issues).
+For issues or suggestions regarding keybindings, please [open an issue](https://github.com/Hype000798/cachyos-sway-dotfiles/issues).

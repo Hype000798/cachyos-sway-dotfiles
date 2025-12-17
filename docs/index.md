@@ -10,7 +10,7 @@ Welcome to the documentation site for the CachyOS Sway dotfiles.
 
 ## Quick start
 ```bash
-chezmoi init --apply https://github.com/ankitjd7795/cachyos-sway-dotfiles.git
+chezmoi init --apply https://github.com/Hype000798/cachyos-sway-dotfiles.git
 ~/.local/share/chezmoi/executable_arch-setup-script.sh
 ```
 
@@ -23,6 +23,6 @@ chezmoi init --apply https://github.com/ankitjd7795/cachyos-sway-dotfiles.git
 - Contributing & Code of Conduct
 
 ## Links
-- Repo: https://github.com/ankitjd7795/cachyos-sway-dotfiles
-- Issues: https://github.com/ankitjd7795/cachyos-sway-dotfiles/issues
-- Discussions: https://github.com/ankitjd7795/cachyos-sway-dotfiles/discussions
+- Repo: https://github.com/Hype000798/cachyos-sway-dotfiles
+- Issues: https://github.com/Hype000798/cachyos-sway-dotfiles/issues
+- Discussions: https://github.com/Hype000798/cachyos-sway-dotfiles/discussions

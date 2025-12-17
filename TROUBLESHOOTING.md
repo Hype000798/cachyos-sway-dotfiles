@@ -37,13 +37,13 @@ Common issues and solutions for CachyOS Sway Dotfiles setup.
    ssh -T git@github.com
    
    # If fails, use HTTPS instead
-   chezmoi init --apply https://github.com/ankitjd7795/cachyos-sway-dotfiles.git
+   chezmoi init --apply https://github.com/Hype000798/cachyos-sway-dotfiles.git
    ```
 
 3. **Clear chezmoi state**:
    ```bash
    rm -rf ~/.local/share/chezmoi
-   chezmoi init --apply git@github.com:ankitjd7795/cachyos-sway-dotfiles.git
+   chezmoi init --apply git@github.com:Hype000798/cachyos-sway-dotfiles.git
    ```
 
 ---
@@ -989,7 +989,7 @@ sway -d >~/sway-debug.log 2>&1
 
 If you can't resolve your issue:
 
-1. **Search existing issues**: Check [GitHub Issues](https://github.com/ankitjd7795/cachyos-sway-dotfiles/issues)
+1. **Search existing issues**: Check [GitHub Issues](https://github.com/Hype000798/cachyos-sway-dotfiles/issues)
 2. **Collect information**:
    - OS version: `cat /etc/os-release`
    - Sway version: `sway --version`
