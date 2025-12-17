@@ -1,0 +1,25 @@
+name: ShellCheck
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  shellcheck:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run ShellCheck
+        uses: ludeeus/action-shellcheck@master
+        with:
+          # Ignore vendor or irrelevant paths if any
+          ignore_paths: |
+            ./.git
+            ./cachyos-sway-dotfiles-main/dot_config/nvim
+          severity: warning
+        env:
+          SHELLCHECK_OPTS: -e SC1090 -e SC1091 # ignore sourcing-not-found for dotfile scripts

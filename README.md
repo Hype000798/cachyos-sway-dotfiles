@@ -1,13 +1,35 @@
 # CachyOS Sway Dotfiles
 
-![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
-![License](https://img.shields.io/badge/license-MIT-blue)
-![Version](https://img.img.shields.io/badge/version-1.0.0-blue)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![Stars](https://img.shields.io/github/stars/ankitjd7795/cachyos-sway-dotfiles?style=social)](https://github.com/ankitjd7795/cachyos-sway-dotfiles)
+[![Forks](https://img.shields.io/github/forks/ankitjd7795/cachyos-sway-dotfiles?style=social)](https://github.com/ankitjd7795/cachyos-sway-dotfiles/fork)
+[![Issues](https://img.shields.io/github/issues/ankitjd7795/cachyos-sway-dotfiles)](https://github.com/ankitjd7795/cachyos-sway-dotfiles/issues)
 
 A collection of meticulously crafted dotfiles for a beautiful and functional Sway Wayland compositor setup on CachyOS, managed with `chezmoi`.
 
+> ⭐ If you find this project useful, consider giving it a star!
+
+## Quick Start
+
+```bash
+# One-line installation
+chezmoi init --apply https://github.com/ankitjd7795/cachyos-sway-dotfiles.git && ~/.local/share/chezmoi/executable_arch-setup-script.sh
+```
+
+## Screenshots
+
+> **Note**: Add screenshots of your setup here! You can upload images to your repo under a `screenshots/` directory or use GitHub's issue/PR upload feature to get image URLs.
+
+<!-- Example:
+![Desktop](screenshots/desktop.png)
+![Waybar](screenshots/waybar.png)
+![Fuzzel](screenshots/fuzzel.png)
+-->
+
 ## Table of Contents
 
+- [Quick Start](#quick-start)
+- [Screenshots](#screenshots)
 - [Project Description](#project-description)
 - [Key Features](#key-features)
 - [Installation](#installation)
@@ -21,6 +43,8 @@ A collection of meticulously crafted dotfiles for a beautiful and functional Swa
 - [Contributing](#contributing)
 - [Development Workflow](#development-workflow)
 - [Roadmap](#roadmap)
+- [Changelog](#changelog)
+- [Security Policy](#security-policy)
 - [License](#license)
 - [Authors & Acknowledgments](#authors--acknowledgments)
 - [Support & Contact](#support--contact)
@@ -52,7 +76,7 @@ These dotfiles are specifically tailored for CachyOS, ensuring compatibility and
 
 ## Installation
 
-These dotfiles are managed using `chezmoi`. Secure setup involves using SSH keys for private repositories, or HTTPS for public ones.
+These dotfiles are managed using `chezmoi` and can be easily installed on any CachyOS or Arch-based system.
 
 ### Prerequisites
 
@@ -60,22 +84,15 @@ Before installing these dotfiles, ensure you have the following installed on you
 
 *   **`chezmoi`**: Install via your package manager (e.g., `sudo pacman -S chezmoi`).
 *   **Git**: For cloning the repository.
-*   **SSH Keys (for private repositories):** If you haven't already, generate an SSH key pair and add your public key to your GitHub account. For instructions, refer to GitHub's official documentation on [generating SSH keys](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) and [adding it to your GitHub account](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account).
 
 ### Recommended Installation (Automated with Setup Script)
 
 This method automates the setup process, including comprehensive package installation via the provided script.
 
-1.  **Initialize `chezmoi`:** Use the URL of your repository. This command will clone the repository to `~/.local/share/chezmoi` and apply the dotfiles to your system.
-    *   **Using SSH (Recommended for private repositories):**
-        ```bash
-        chezmoi init --apply git@github.com:Hype000798/cachyos-sway-dotfiles.git
-        ```
-        (Ensure your SSH agent is running and your key is loaded.)
-    *   **Using HTTPS (Suitable for public repositories or if SSH is not set up):**
-        ```bash
-        chezmoi init --apply https://github.com/Hype000798/cachyos-sway-dotfiles.git
-        ```
+1.  **Initialize `chezmoi`:** This command will clone the repository to `~/.local/share/chezmoi` and apply the dotfiles to your system.
+    ```bash
+    chezmoi init --apply https://github.com/ankitjd7795/cachyos-sway-dotfiles.git
+    ```
 2.  **Run the Setup Script:** The `executable_arch-setup-script.sh` is now available locally in your `chezmoi` source directory (e.g., `~/.local/share/chezmoi/executable_arch-setup-script.sh`). Execute it to install system packages and configure CachyOS repositories:
     ```bash
     ~/.local/share/chezmoi/executable_arch-setup-script.sh
@@ -87,14 +104,10 @@ This method automates the setup process, including comprehensive package install
 If you prefer a more granular setup or need to inspect each step:
 
 1.  **Clone the Repository:**
-    *   **Using SSH:**
-        ```bash
-        git clone git@github.com:Hype000798/cachyos-sway-dotfiles.git ~/.local/share/chezmoi
-        ```
-    *   **Using HTTPS:**
-        ```bash
-        git clone https://github.com/Hype000798/cachyos-sway-dotfiles.git ~/.local/share/chezmoi
-        ```
+    ```bash
+    git clone https://github.com/ankitjd7795/cachyos-sway-dotfiles.git ~/.local/share/chezmoi
+    cd ~/.local/share/chezmoi
+    ```
 2.  **Install Prerequisites:** Manually install all necessary software (Sway, Waybar, Fuzzel, Hyprlock, Wezterm, etc.) using your package manager. You can refer to `~/.local/share/chezmoi/executable_arch-setup-script.sh` for a comprehensive list of recommended packages.
 3.  **Apply Dotfiles:**
     ```bash
@@ -658,12 +671,12 @@ Thank you for considering contributing to this project!
 1. Fork the repository on GitHub
 2. Clone your fork:
    ```bash
-   git clone git@github.com:YOUR_USERNAME/cachyos-sway-dotfiles.git ~/.local/share/chezmoi
+   git clone https://github.com/YOUR_USERNAME/cachyos-sway-dotfiles.git ~/.local/share/chezmoi
    cd ~/.local/share/chezmoi
    ```
 3. Add upstream:
    ```bash
-   git remote add upstream git@github.com:Hype000798/cachyos-sway-dotfiles.git
+   git remote add upstream https://github.com/ankitjd7795/cachyos-sway-dotfiles.git
    ```
 
 ### Development Workflow
@@ -755,6 +768,14 @@ These dotfiles are managed using Git via `chezmoi`. To contribute or make person
 *   Automate post-install configurations where possible.
 *   Expand theming options.
 
+## Changelog
+
+See [CHANGELOG.md](CHANGELOG.md) for release notes and version history.
+
+## Security Policy
+
+See [SECURITY.md](SECURITY.md) for vulnerability reporting and security guidelines.
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
@@ -766,4 +787,19 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Support & Contact
 
-If you encounter any issues or have questions, please open an issue on the [GitHub Issue Tracker](https://github.com/ankitjd7795/cachyos-sway-dotfiles/issues).
+If you encounter any issues or have questions:
+
+- 📝 [Open an Issue](https://github.com/ankitjd7795/cachyos-sway-dotfiles/issues) - Report bugs or request features
+- 💬 [Start a Discussion](https://github.com/ankitjd7795/cachyos-sway-dotfiles/discussions) - Ask questions or share ideas
+- ⭐ [Star the Repository](https://github.com/ankitjd7795/cachyos-sway-dotfiles) - Show your support!
+
+## Show Your Setup
+
+Using these dotfiles? Share your setup! Open a discussion or PR with screenshots of your customizations. We'd love to see what you've created!
+
+## Acknowledgments
+
+Special thanks to:
+- The Sway, Waybar, and Wayland communities
+- CachyOS developers for the optimized repositories
+- All contributors who helped improve these dotfiles
