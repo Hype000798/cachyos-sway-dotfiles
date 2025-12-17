@@ -1,5 +1,5 @@
 local options = {
-    musixmatch_token = '2501192ac605cc2e16b6b2c04fe43d1011a38d919fe802976084e7',
+    musixmatch_token = '',
     mark_as_ja = false,
     chinese_to_kanji_path = '',
     strip_artists = false,
@@ -221,6 +221,11 @@ mp.add_key_binding('Alt+m', 'musixmatch-download', function()
 
     if title == false then
         show_error(artist)
+        return
+    end
+
+    if options.musixmatch_token == '' then
+        show_error('Set musixmatch_token in script-opts/lrc.conf before downloading')
         return
     end
 
