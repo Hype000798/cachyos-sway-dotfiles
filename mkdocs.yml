@@ -9,14 +9,11 @@ theme:
   logo: assets/logo.svg
   favicon: assets/favicon.png
   palette:
-    # Palette toggle for light and dark mode
-    # Media query for automatic light mode
     - media: "(prefers-color-scheme: light)"
       scheme: default
       toggle:
         icon: material/brightness-7
         name: Switch to dark mode
-    # Media query for automatic dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
       toggle:
@@ -25,10 +22,12 @@ theme:
   features:
     - navigation.tabs
     - navigation.tabs.sticky
-    - content.action.edit
     - navigation.top
+    - navigation.instant    # Recommended: Faster page loads
     - search.suggest
     - search.highlight
+    - content.action.edit
+    - content.code.copy     # Recommended: Copy button for code
 
 nav:
   - Home: index.md
@@ -46,10 +45,19 @@ plugins:
 
 markdown_extensions:
   - admonition
-  - codehilite
   - toc:
       permalink: true
   - tables
+  # Replaces codehilite for better Material integration
+  - pymdownx.highlight:
+      anchor_linenu0ms: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.superfences
+  # Essential for documenting shortcuts in Sway
+  - pymdownx.keys 
+  - pymdownx.details # Allows collapsible "spoiler" blocks
 
 extra:
   social:
