@@ -45,19 +45,24 @@ plugins:
 
 markdown_extensions:
   - admonition
+  - attr_list           # <--- Add this
   - toc:
       permalink: true
   - tables
   # Replaces codehilite for better Material integration
   - pymdownx.highlight:
-      anchor_linenu0ms: true
+      anchor_linenums: true # <--- Typo fixed here
       line_spans: __span
       pygments_lang_class: true
   - pymdownx.inlinehilite
   - pymdownx.superfences
-  # Essential for documenting shortcuts in Sway
   - pymdownx.keys 
-  - pymdownx.details # Allows collapsible "spoiler" blocks
+  - pymdownx.details
+  - pymdownx.tabbed:    # <--- Add this for content tabs
+      alternate_style: true 
+  - pymdownx.emoji:     # <--- Add this for icons/emojis
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
 
 extra:
   social:
